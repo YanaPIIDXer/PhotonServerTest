@@ -5,6 +5,6 @@ namespace Common.Code
     /// </summary>
     public enum EOperationCode : byte
     {
-        Test,
+        LogIn,
     }
 }
