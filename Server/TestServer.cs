@@ -1,6 +1,6 @@
 using Photon.SocketServer;
 
-public class Application : ApplicationBase
+public class TestServer : ApplicationBase
 {
     protected override PeerBase CreatePeer(InitRequest initRequest)
     {
