@@ -38,15 +38,6 @@ namespace State
         protected abstract void Initialize(IObservable<OperationPacket> PacketObservable);
 
         /// <summary>
-        /// イベント送信
-        /// </summary>
-        /// <param name="Packet">パケット</param>
-        protected void SendEvent(EventPacket Packet)
-        {
-            Peer.SendEventPacket(Packet);
-        }
-
-        /// <summary>
         /// レスポンス送信
         /// </summary>
         /// <param name="Packet">パケット</param>
