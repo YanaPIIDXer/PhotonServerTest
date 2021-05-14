@@ -1,3 +1,5 @@
+using Common.Code;
+
 namespace Common.Packet
 {
     /// <summary>
