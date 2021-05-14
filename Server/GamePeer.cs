@@ -39,3 +39,4 @@ public class GamePeer : ClientPeer
         var Response = new OperationResponse(Code, Params);
         SendOperationResponse(Response, new SendParameters());
     }
+}
