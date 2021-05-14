@@ -4,22 +4,60 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build-common",
             "command": "dotnet",
             "type": "shell",
             "args": [
                 "build",
-                "./Server/Server.csproj",
-                // Ask dotnet build to generate full paths for file names.
-                //"/property:GenerateFullPaths=true",
-                // Do not generate summary otherwise it leads to duplicate errors in Problems panel
-                //"/consoleloggerparameters:NoSummary"
+                "./Common/PhotonServerTestCommon.csproj",
             ],
             "group": "none",
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "deploy",
+            "label": "deploy-common-to-client",
+            "command": "copy",
+            "type": "shell",
+            "args": [
+                "./Common/bin/Debug/netstandard2.0/PhotonServerTestCommon.dll",
+                "./Client/PhotonServerTestClient/Assets/Binaries/",
+            ],
+            "group": "none",
+            "problemMatcher": "$msCompile",
+            "dependsOn": [
+                "build-common"
+            ]
+        },
+        {
+            "label": "deploy-common-to-server",
+            "command": "copy",
+            "type": "shell",
+            "args": [
+                "./Common/bin/Debug/netstandard2.0/PhotonServerTestCommon.dll",
+                "./Server/",
+            ],
+            "group": "none",
+            "problemMatcher": "$msCompile",
+            "dependsOn": [
+                "deploy-common-to-client"
+            ]
+        },
+        {
+            "label": "build-server",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                "./Server/Server.csproj",
+            ],
+            "group": "none",
+            "problemMatcher": "$msCompile",
+            "dependsOn": [
+                "deploy-common-to-server"
+            ]
+        },
+        {
+            "label": "build",
             "command": "copy",
             "type": "shell",
             "args": [
@@ -29,7 +67,7 @@
             "group": "build",
             "problemMatcher": "$msCompile",
             "dependsOn": [
-                "build"
+                "build-server"
             ]
         }
     ]
