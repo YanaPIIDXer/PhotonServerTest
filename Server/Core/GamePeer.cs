@@ -3,6 +3,7 @@ using PhotonHostRuntimeInterfaces;
 using Common.Packet;
 using System;
 using System.Reactive.Subjects;
+using State;
 
 public class GamePeer : ClientPeer
 {
@@ -15,6 +16,11 @@ public class GamePeer : ClientPeer
     /// リクエストを受信した
     /// </summary>
     public IObservable<OperationPacket> OnRecvRequest { get { return OnRecvRequestSubject; } }
+
+    /// <summary>
+    /// 現在のゲームステート
+    /// </summary>
+    private GameState CurrentState = null;
 
     public GamePeer(InitRequest initRequest) : base(initRequest)
     {
