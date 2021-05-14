@@ -19,6 +19,7 @@ public class GamePeer : ClientPeer
 
     /// <summary>
     /// 現在のゲームステート
+    /// ※ぶっちゃけ参照生かしてるだけ
     /// </summary>
     private GameState CurrentState = null;
 
@@ -34,6 +35,15 @@ public class GamePeer : ClientPeer
     {
         OperationPacket Packet = new OperationPacket(operationRequest.OperationCode, operationRequest.Parameters);
         OnRecvRequestSubject.OnNext(Packet);
+    }
+
+    /// <summary>
+    /// 次のStateを設定
+    /// </summary>
+    /// <param name="NextState">次のState</param>
+    public void SetNextState(GameState NextState)
+    {
+        CurrentState = NextState;
     }
 
     /// <summary>

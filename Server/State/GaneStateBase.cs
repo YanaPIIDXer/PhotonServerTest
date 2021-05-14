@@ -27,6 +27,7 @@ namespace State
         public void SetPeer(GamePeer Peer)
         {
             this.Peer = Peer;
+            Peer.SetNextState(this);
             Initialize(Peer.OnRecvRequest);
         }
 
