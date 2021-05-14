@@ -18,4 +18,15 @@ namespace Common.Packet
         /// <param name="ParameterDic">パラメータが入ったDictionary</param>
         public abstract void Deserialize(Dictionary<byte, object> ParameterDic);
     }
+
+    /// <summary>
+    /// イベント用パケット
+    /// </summary>
+    public abstract class EventPacket : PacketBase
+    {
+        /// <summary>
+        /// イベントコード
+        /// </summary>
+        public abstract EEventCode Code { get; }
+    }
 }
