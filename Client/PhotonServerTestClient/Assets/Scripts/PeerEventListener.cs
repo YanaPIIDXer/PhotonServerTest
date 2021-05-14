@@ -7,6 +7,7 @@ public class PeerEventListener : MonoBehaviour, IPhotonPeerListener
 {
     public void DebugReturn(DebugLevel level, string message)
     {
+        Debug.Log(string.Format("Level:{0} {1}", level.ToString(), message));
     }
 
     public void OnEvent(EventData eventData)
