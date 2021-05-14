@@ -31,4 +31,15 @@ namespace Common.Packet
         /// </summary>
         public abstract EEventCode Code { get; }
     }
+
+    /// <summary>
+    /// オペレーション用パケット
+    /// </summary>
+    public abstract class OperationPacket : PacketBase
+    {
+        /// <summary>
+        /// オペレーションコード
+        /// </summary>
+        public abstract EOperationCode Code { get; }
+    }
 }
