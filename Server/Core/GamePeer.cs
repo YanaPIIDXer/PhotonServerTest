@@ -25,6 +25,8 @@ public class GamePeer : ClientPeer
 
     public GamePeer(InitRequest initRequest) : base(initRequest)
     {
+        CurrentState = new GameStateTitle();
+        CurrentState.SetPeer(this);
     }
 
     protected override void OnDisconnect(DisconnectReason reasonCode, string reasonDetail)
