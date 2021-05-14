@@ -4,4 +4,16 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="ExitGamesLibs">
+      <HintPath>./ExitGamesLibs.dll</HintPath>
+    </Reference>
+    <Reference Include="Photon.SocketServer">
+      <HintPath>./Photon.SocketServer.dll</HintPath>
+    </Reference>
+    <Reference Include="PhotonHostRuntimeInterfaces">
+      <HintPath>./PhotonHostRuntimeInterfaces.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
