@@ -1,9 +1,21 @@
 using Photon.SocketServer;
 using PhotonHostRuntimeInterfaces;
 using Common.Packet;
+using System;
+using System.Reactive.Subjects;
 
 public class GamePeer : ClientPeer
 {
+    /// <summary>
+    /// リクエスト受信Subject
+    /// </summary>
+    private Subject<OperationPacket> OnRecvRequestSubject = new Subject<OperationPacket>();
+
+    /// <summary>
+    /// リクエストを受信した
+    /// </summary>
+    public IObservable<OperationPacket> OnRecvRequest { get { return OnRecvRequestSubject; } }
+
     public GamePeer(InitRequest initRequest) : base(initRequest)
     {
     }
@@ -14,6 +26,8 @@ public class GamePeer : ClientPeer
 
     protected override void OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters)
     {
+        OperationPacket Packet = new OperationPacket(operationRequest.OperationCode, operationRequest.Parameters);
+        OnRecvRequestSubject.OnNext(Packet);
     }
 
     /// <summary>
