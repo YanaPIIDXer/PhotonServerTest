@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ExitGames.Client.Photon;
+using System;
+using UniRx;
 
 namespace Game.Networking
 {
@@ -19,6 +21,16 @@ namespace Game.Networking
         public static ConnectionClient Instance { get { return _Instance; } }
         private static ConnectionClient _Instance = null;
         #endregion
+
+        /// <summary>
+        /// 接続状態
+        /// </summary>
+        private ReactiveProperty<StatusCode> ConnectionStatus = new ReactiveProperty<StatusCode>(StatusCode.Disconnect);
+
+        /// <summary>
+        /// 接続状態が更新された
+        /// </summary>
+        public IObservable<StatusCode> OnConnectionStatusChanged { get { return ConnectionStatus; } }
 
         void Awake()
         {
@@ -79,6 +91,7 @@ namespace Game.Networking
                     DebugReturn(DebugLevel.INFO, "Connection Success!!");
                     break;
             }
+            ConnectionStatus.Value = statusCode;
         }
     }
 }
