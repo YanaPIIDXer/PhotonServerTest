@@ -1,5 +1,8 @@
 using System;
+using System.Reactive.Linq;
 using Common.Packet;
+using Common.Code;
+using System.Collections.Generic;
 
 namespace State
 {
@@ -17,6 +20,19 @@ namespace State
 
         protected override void Initialize(IObservable<OperationPacket> PacketObservable)
         {
+            PacketObservable
+                .Where((Packet) => Packet.Code == EOperationCode.LogIn)
+                .Subscribe((Packet) => OnRecvLogInRequest(Packet));
+        }
+
+        /// <summary>
+        /// ログインリクエスト受信
+        /// </summary>
+        /// <param name="Packet">パケット</param>
+        private void OnRecvLogInRequest(OperationPacket Packet)
+        {
+            OperationPacket Response = new OperationPacket(EOperationCode.LogIn, new Dictionary<byte, object>());
+            SendResponse(Response);
         }
     }
 }
