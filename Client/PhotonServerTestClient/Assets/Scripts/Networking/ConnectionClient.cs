@@ -32,6 +32,27 @@ namespace Game.Networking
         /// </summary>
         public IObservable<StatusCode> OnConnectionStatusChanged { get { return ConnectionStatus; } }
 
+        /// <summary>
+        /// イベント受信時のSubject
+        /// </summary>
+        private Subject<EventData> OnRecvEventSubject = new Subject<EventData>();
+
+        /// <summary>
+        /// イベントを受信した
+        /// </summary>
+        /// <value></value>
+        public IObservable<EventData> OnRecvEvent { get { return OnRecvEventSubject; } }
+
+        /// <summary>
+        /// レスポンス受信時のSubject
+        /// </summary>
+        private Subject<OperationResponse> OnRecvResponseSubject = new Subject<OperationResponse>();
+
+        /// <summary>
+        /// レスポンスを受信した
+        /// </summary>
+        public IObservable<OperationResponse> OnRecvResponse { get { return OnRecvResponseSubject; } }
+
         void Awake()
         {
             GameObject.DontDestroyOnLoad(gameObject);
@@ -76,10 +97,12 @@ namespace Game.Networking
 
         public void OnEvent(EventData eventData)
         {
+            OnRecvEventSubject.OnNext(eventData);
         }
 
         public void OnOperationResponse(OperationResponse operationResponse)
         {
+            OnRecvResponseSubject.OnNext(operationResponse);
         }
 
         public void OnStatusChanged(StatusCode statusCode)
