@@ -8,11 +8,20 @@ namespace Common.Packet
     /// </summary>
     public abstract class PacketBase
     {
-
         /// <summary>
         /// パラメータが入ったDictionary
         /// </summary>
         private Dictionary<byte, object> Params = null;
+
+        /// <summary>
+        /// 送信用パラメータDictionary
+        /// </summary>
+        public Dictionary<byte, object> SendParamsDictionary { get { return Params; } }
+
+        /// <summary>
+        /// 送信用コード
+        /// </summary>
+        public abstract byte SendCode { get; }
 
         /// <summary>
         /// コンストラクタ
@@ -34,6 +43,16 @@ namespace Common.Packet
             object Param = Params[ParamCode];
             return (T)Param;
         }
+
+        /// <summary>
+        /// パラメータをセット
+        /// </summary>
+        /// <param name="ParamCode">パラメータコード</param>
+        /// <param name="Param">パラメータ</param>
+        public void SetParam(byte ParamCode, object Param)
+        {
+            Params[ParamCode] = Param;
+        }
     }
 
     /// <summary>
@@ -45,6 +64,11 @@ namespace Common.Packet
         /// イベントコード
         /// </summary>
         public EEventCode Code { get; private set; }
+
+        /// <summary>
+        /// 送信用コード
+        /// </summary>
+        public override byte SendCode => (byte)Code;
 
         /// <summary>
         /// コンストラクタ
@@ -67,6 +91,11 @@ namespace Common.Packet
         /// オペレーションコード
         /// </summary>
         public EOperationCode Code { get; }
+
+        /// <summary>
+        /// 送信用コード
+        /// </summary>
+        public override byte SendCode => (byte)Code;
 
         /// <summary>
         /// コンストラクタ
