@@ -26,7 +26,7 @@ namespace Game.UI
                         .Subscribe((_) => ConnectionClient.Instance.Connect())
                         .AddTo(gameObject);
 
-            ConnectionClient.Instance.OnConnectionStatusChanged.Subscribe((Status) =>
+            ConnectionClient.OnConnectionStatusChanged.Subscribe((Status) =>
             {
                 ConnButton.interactable = (Status != StatusCode.Connect);
             }).AddTo(gameObject);

@@ -26,33 +26,33 @@ namespace Game.Networking
         /// <summary>
         /// 接続状態
         /// </summary>
-        private ReactiveProperty<StatusCode> ConnectionStatus = new ReactiveProperty<StatusCode>(StatusCode.Disconnect);
+        private static ReactiveProperty<StatusCode> ConnectionStatus = new ReactiveProperty<StatusCode>(StatusCode.Disconnect);
 
         /// <summary>
         /// 接続状態が更新された
         /// </summary>
-        public IObservable<StatusCode> OnConnectionStatusChanged { get { return ConnectionStatus; } }
+        public static IObservable<StatusCode> OnConnectionStatusChanged { get { return ConnectionStatus; } }
 
         /// <summary>
         /// イベント受信時のSubject
         /// </summary>
-        private Subject<EventPacket> OnRecvEventSubject = new Subject<EventPacket>();
+        private static Subject<EventPacket> OnRecvEventSubject = new Subject<EventPacket>();
 
         /// <summary>
         /// イベントを受信した
         /// </summary>
         /// <value></value>
-        public IObservable<EventPacket> OnRecvEvent { get { return OnRecvEventSubject; } }
+        public static IObservable<EventPacket> OnRecvEvent { get { return OnRecvEventSubject; } }
 
         /// <summary>
         /// レスポンス受信時のSubject
         /// </summary>
-        private Subject<OperationPacket> OnRecvResponseSubject = new Subject<OperationPacket>();
+        private static Subject<OperationPacket> OnRecvResponseSubject = new Subject<OperationPacket>();
 
         /// <summary>
         /// レスポンスを受信した
         /// </summary>
-        public IObservable<OperationPacket> OnRecvResponse { get { return OnRecvResponseSubject; } }
+        public static IObservable<OperationPacket> OnRecvResponse { get { return OnRecvResponseSubject; } }
 
         void Awake()
         {
