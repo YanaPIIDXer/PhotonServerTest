@@ -75,6 +75,17 @@ namespace Common.Packet
         /// </summary>
         /// <param name="Code">イベントコード</param>
         /// <param name="Params">パラメータが入ったDictionary</param>
+        public EventPacket(EEventCode Code, Dictionary<byte, object> Params)
+            : base(Params)
+        {
+            this.Code = Code;
+        }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="Code">イベントコード</param>
+        /// <param name="Params">パラメータが入ったDictionary</param>
         public EventPacket(byte Code, Dictionary<byte, object> Params)
             : base(Params)
         {
@@ -96,6 +107,17 @@ namespace Common.Packet
         /// 送信用コード
         /// </summary>
         public override byte SendCode => (byte)Code;
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="Code">オペレーションコード</param>
+        /// <param name="Params">パラメータが入ったDictionary</param>
+        public OperationPacket(EOperationCode Code, Dictionary<byte, object> Params)
+            : base(Params)
+        {
+            this.Code = Code;
+        }
 
         /// <summary>
         /// コンストラクタ
