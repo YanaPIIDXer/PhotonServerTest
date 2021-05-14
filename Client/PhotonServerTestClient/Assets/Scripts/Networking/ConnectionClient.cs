@@ -42,7 +42,11 @@ namespace Game.Networking
             if (Peer != null) { return; }
 
             Peer = new PhotonPeer(this, ConnectionProtocol.Tcp);
-            Peer.Connect("127.0.0.1", "TestServer");
+            if (!Peer.Connect("127.0.0.1:4530", "TestServer"))
+            {
+                DebugReturn(DebugLevel.ERROR, "Connect Failed...");
+                return;
+            }
         }
 
         public void DebugReturn(DebugLevel level, string message)
