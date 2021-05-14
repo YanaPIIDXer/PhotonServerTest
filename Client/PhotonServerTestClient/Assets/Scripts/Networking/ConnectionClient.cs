@@ -4,6 +4,7 @@ using UnityEngine;
 using ExitGames.Client.Photon;
 using System;
 using UniRx;
+using Common.Packet;
 
 namespace Game.Networking
 {
@@ -35,23 +36,23 @@ namespace Game.Networking
         /// <summary>
         /// イベント受信時のSubject
         /// </summary>
-        private Subject<EventData> OnRecvEventSubject = new Subject<EventData>();
+        private Subject<EventPacket> OnRecvEventSubject = new Subject<EventPacket>();
 
         /// <summary>
         /// イベントを受信した
         /// </summary>
         /// <value></value>
-        public IObservable<EventData> OnRecvEvent { get { return OnRecvEventSubject; } }
+        public IObservable<EventPacket> OnRecvEvent { get { return OnRecvEventSubject; } }
 
         /// <summary>
         /// レスポンス受信時のSubject
         /// </summary>
-        private Subject<OperationResponse> OnRecvResponseSubject = new Subject<OperationResponse>();
+        private Subject<OperationPacket> OnRecvResponseSubject = new Subject<OperationPacket>();
 
         /// <summary>
         /// レスポンスを受信した
         /// </summary>
-        public IObservable<OperationResponse> OnRecvResponse { get { return OnRecvResponseSubject; } }
+        public IObservable<OperationPacket> OnRecvResponse { get { return OnRecvResponseSubject; } }
 
         void Awake()
         {
@@ -97,12 +98,14 @@ namespace Game.Networking
 
         public void OnEvent(EventData eventData)
         {
-            OnRecvEventSubject.OnNext(eventData);
+            EventPacket Packet = new EventPacket(eventData.Code, eventData.Parameters);
+            OnRecvEventSubject.OnNext(Packet);
         }
 
         public void OnOperationResponse(OperationResponse operationResponse)
         {
-            OnRecvResponseSubject.OnNext(operationResponse);
+            OperationPacket Packet = new OperationPacket(operationResponse.OperationCode, operationResponse.Parameters);
+            OnRecvResponseSubject.OnNext(Packet);
         }
 
         public void OnStatusChanged(StatusCode statusCode)

@@ -90,7 +90,7 @@ namespace Common.Packet
         /// <summary>
         /// オペレーションコード
         /// </summary>
-        public EOperationCode Code { get; }
+        public EOperationCode Code { get; private set; }
 
         /// <summary>
         /// 送信用コード
