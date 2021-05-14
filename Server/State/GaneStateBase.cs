@@ -16,7 +16,15 @@ namespace State
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GameState(GamePeer Peer)
+        public GameState()
+        {
+        }
+
+        /// <summary>
+        /// Peerをセット
+        /// </summary>
+        /// <param name="Peer">Peer</param>
+        public void SetPeer(GamePeer Peer)
         {
             this.Peer = Peer;
             Initialize(Peer.OnRecvRequest);
@@ -44,6 +52,19 @@ namespace State
         protected void SendResponse(OperationPacket Packet)
         {
             Peer.SendResponsePacket(Packet);
+        }
+
+        /// <summary>
+        /// ステート切り替え
+        /// </summary>
+        /// <typeparam name="T">ステートクラスの型</typeparam>
+        /// <return>ステート</return>
+        protected T ChangeState<T>()
+             where T : GameState, new()
+        {
+            T NextState = new T();
+            NextState.SetPeer(Peer);
+            return NextState;
         }
     }
 }
