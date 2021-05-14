@@ -14,6 +14,9 @@
     <Reference Include="PhotonHostRuntimeInterfaces">
       <HintPath>./PhotonHostRuntimeInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="PhotonServerTestCommon">
+      <HintPath>./PhotonServerTestCommon.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
