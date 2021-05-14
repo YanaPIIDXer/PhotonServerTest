@@ -15,7 +15,7 @@
                 // Do not generate summary otherwise it leads to duplicate errors in Problems panel
                 //"/consoleloggerparameters:NoSummary"
             ],
-            "group": "build",
+            "group": "none",
             "problemMatcher": "$msCompile"
         },
         {
@@ -27,7 +27,10 @@
                 "D:/PhotonServer/Photon-OnPremise-Server-SDK_v4-0-29-11263/deploy/TestServer/bin",
             ],
             "group": "build",
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "dependsOn": [
+                "build"
+            ]
         }
     ]
 }
