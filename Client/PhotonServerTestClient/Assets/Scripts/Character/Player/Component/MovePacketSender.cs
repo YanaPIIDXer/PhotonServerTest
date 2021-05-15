@@ -31,7 +31,8 @@ namespace Game.Character.Player.Component
         /// </summary>
         public MovePacketSender()
         {
-            PrevPosition.ThrottleFirst(TimeSpan.FromSeconds(3))
+            PrevPosition
+                .ThrottleFirst(TimeSpan.FromSeconds(3))
                 .Skip(1)
                 .Subscribe((Pos) =>
                 {
