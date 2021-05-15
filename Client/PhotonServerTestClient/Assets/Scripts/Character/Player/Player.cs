@@ -21,6 +21,10 @@ namespace Game.Character.Player
             LocalPlayerMovement Movement = new LocalPlayerMovement();
             ControlObservable.Subscribe((Value) => Movement.InputVector = Value);
             AddCharacterComponent(Movement);
+
+            // ローカルキャラの移動に附随して移動パケット送信コンポーネントも
+            MovePacketSender MoveSender = new MovePacketSender();
+            AddCharacterComponent(MoveSender);
         }
     }
 }
