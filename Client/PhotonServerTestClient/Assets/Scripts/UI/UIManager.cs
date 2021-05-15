@@ -138,7 +138,9 @@ namespace Game.UI
             {
                 while (Tr.childCount != 0)
                 {
-                    Destroy(Tr.GetChild(0).gameObject);
+                    var Child = Tr.GetChild(0);
+                    Child.SetParent(null);
+                    Destroy(Child.gameObject);
                 }
             }
         }
