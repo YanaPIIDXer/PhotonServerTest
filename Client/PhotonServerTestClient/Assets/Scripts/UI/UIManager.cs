@@ -68,11 +68,13 @@ namespace Game.UI
             /// </summary>
             /// <param name="UIObject">UIのGameObject</param>
             /// <param name="ParentTransform">親のTransform</param>
-            public UIHandler(GameObject UIObject, Transform ParentTransform)
+            /// <param name="OriginPos">元々の座標</param>
+            public UIHandler(GameObject UIObject, Transform ParentTransform, Vector3 OriginPos)
             {
                 this.UIObject = UIObject;
                 this.UIObject.transform.SetParent(ParentTransform);
                 UIComponent = this.UIObject.GetComponent<T>();
+                this.UIObject.transform.localPosition = OriginPos;
             }
 
             /// <summary>
@@ -99,6 +101,8 @@ namespace Game.UI
             GameObject Prefab = Resources.Load<GameObject>(Path);
             Debug.Assert(Prefab != null, "Prefab Load Failed. Path:" + Path);
 
+            Vector3 OriginPos = Prefab.transform.position;
+
             GameObject Obj = Instantiate<GameObject>(Prefab);
             Debug.Assert(Obj != null, "UI Object Intantiate Failed. Path:" + Path);
 
@@ -116,7 +120,7 @@ namespace Game.UI
                     break;
             }
 
-            return new UIHandler<T>(Obj, Tr);
+            return new UIHandler<T>(Obj, Tr, OriginPos);
         }
 
         void Awake()
