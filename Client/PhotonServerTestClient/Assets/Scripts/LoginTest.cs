@@ -6,6 +6,7 @@ using System;
 using UniRx;
 using ExitGames.Client.Photon;
 using Common.Code;
+using Common.Packet;
 
 /// <summary>
 /// ログイン実験用
@@ -19,11 +20,13 @@ public class LoginTest : MonoBehaviour
             .Where((Code) => Code == StatusCode.Connect)
             .Subscribe((_) =>
             {
+                OperationPacket Packet = new OperationPacket(EOperationCode.LogIn, new Dictionary<byte, object>());
+                ConnectionClient.Instance.SendRequest(Packet);
             }).AddTo(gameObject);
 
         ConnectionClient.OnRecvResponse
             .Where((Packet) => Packet.Code == EOperationCode.LogIn)
-            .Subscribe((_) => Debug.Log("LogIn Success!!"))
-            .AddTo(gameObject);
+                .Subscribe((_) => Debug.Log("LogIn Success!!"))
+                .AddTo(gameObject);
     }
 }

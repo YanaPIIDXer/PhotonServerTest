@@ -83,6 +83,15 @@ namespace Game.Networking
             }
         }
 
+        /// <summary>
+        /// リクエスト送信
+        /// </summary>
+        /// <param name="Packet">パケット</param>
+        public void SendRequest(OperationPacket Packet)
+        {
+            Peer.OpCustom(Packet.SendCode, Packet.SendParamsDictionary, false);
+        }
+
         public void DebugReturn(DebugLevel level, string message)
         {
             string Message = string.Format("Level:{0} {1}", level.ToString(), message);
