@@ -74,9 +74,8 @@ namespace Common.Packet
         /// コンストラクタ
         /// </summary>
         /// <param name="Code">イベントコード</param>
-        /// <param name="Params">パラメータが入ったDictionary</param>
-        public EventPacket(EEventCode Code, Dictionary<byte, object> Params)
-            : base(Params)
+        public EventPacket(EEventCode Code)
+            : base(new Dictionary<byte, object>())
         {
             this.Code = Code;
         }
@@ -112,9 +111,8 @@ namespace Common.Packet
         /// コンストラクタ
         /// </summary>
         /// <param name="Code">オペレーションコード</param>
-        /// <param name="Params">パラメータが入ったDictionary</param>
-        public OperationPacket(EOperationCode Code, Dictionary<byte, object> Params)
-            : base(Params)
+        public OperationPacket(EOperationCode Code)
+            : base(new Dictionary<byte, object>())
         {
             this.Code = Code;
         }

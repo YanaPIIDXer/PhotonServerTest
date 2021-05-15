@@ -31,7 +31,7 @@ namespace State
         /// <param name="Packet">パケット</param>
         private void OnRecvLogInRequest(OperationPacket Packet)
         {
-            OperationPacket Response = new OperationPacket(EOperationCode.LogIn, new Dictionary<byte, object>());
+            OperationPacket Response = new OperationPacket(EOperationCode.LogIn);
             SendResponse(Response);
         }
     }

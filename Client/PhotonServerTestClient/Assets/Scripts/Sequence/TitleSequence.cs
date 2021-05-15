@@ -21,7 +21,7 @@ namespace Game.Sequence
                 .Where((Code) => Code == ExitGames.Client.Photon.StatusCode.Connect)
                 .Subscribe((_) =>
                 {
-                    OperationPacket Packet = new OperationPacket(EOperationCode.LogIn, new Dictionary<byte, object>());
+                    OperationPacket Packet = new OperationPacket(EOperationCode.LogIn);
                     ConnectionClient.Instance.SendRequest(Packet);
                 }).AddTo(gameObject);
 
