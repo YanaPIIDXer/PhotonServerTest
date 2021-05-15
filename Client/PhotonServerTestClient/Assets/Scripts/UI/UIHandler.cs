@@ -24,14 +24,10 @@ namespace Game.UI
         /// コンストラクタ
         /// </summary>
         /// <param name="UIObject">UIのGameObject</param>
-        /// <param name="ParentTransform">親のTransform</param>
-        /// <param name="OriginPos">元々の座標</param>
-        public UIHandler(GameObject UIObject, Transform ParentTransform, Vector3 OriginPos)
+        public UIHandler(GameObject UIObject)
         {
             this.UIObject = UIObject;
-            this.UIObject.transform.SetParent(ParentTransform);
             UIComponent = this.UIObject.GetComponent<T>();
-            this.UIObject.transform.localPosition = OriginPos;
         }
 
         /// <summary>

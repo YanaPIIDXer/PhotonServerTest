@@ -62,11 +62,6 @@ namespace Game.UI
             GameObject Prefab = Resources.Load<GameObject>(Path);
             Debug.Assert(Prefab != null, "Prefab Load Failed. Path:" + Path);
 
-            Vector3 OriginPos = Prefab.transform.position;
-
-            GameObject Obj = Instantiate<GameObject>(Prefab);
-            Debug.Assert(Obj != null, "UI Object Intantiate Failed. Path:" + Path);
-
             Transform Tr = null;
             switch (Canvas)
             {
@@ -81,7 +76,10 @@ namespace Game.UI
                     break;
             }
 
-            return new UIHandler<T>(Obj, Tr, OriginPos);
+            GameObject Obj = Instantiate<GameObject>(Prefab, Tr);
+            Debug.Assert(Obj != null, "UI Object Intantiate Failed. Path:" + Path);
+
+            return new UIHandler<T>(Obj);
         }
 
         void Awake()
