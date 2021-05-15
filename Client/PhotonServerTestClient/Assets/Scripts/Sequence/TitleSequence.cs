@@ -7,6 +7,7 @@ using UniRx;
 using Common.Code;
 using Common.Packet;
 using UnityEngine.SceneManagement;
+using Game.UI;
 
 namespace Game.Sequence
 {
@@ -17,6 +18,8 @@ namespace Game.Sequence
     {
         void Awake()
         {
+            UIManager.Show<ConnectionButton>("Title/ConnectionButton", ECanvas.Front);
+
             ConnectionClient.OnConnectionStatusChanged
                 .Where((Code) => Code == ExitGames.Client.Photon.StatusCode.Connect)
                 .Subscribe((_) =>
