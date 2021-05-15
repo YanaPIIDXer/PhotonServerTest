@@ -33,6 +33,8 @@ namespace State
         {
             OperationPacket Response = new OperationPacket(EOperationCode.LogIn);
             SendResponse(Response);
+
+            ChangeState<GameStateActive>();
         }
     }
 }
