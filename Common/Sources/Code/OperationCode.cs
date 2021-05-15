@@ -6,5 +6,6 @@ namespace Common.Code
     public enum EOperationCode : byte
     {
         LogIn,
+        Move,
     }
 }
