@@ -4,7 +4,8 @@ public class TestServer : ApplicationBase
 {
     protected override PeerBase CreatePeer(InitRequest initRequest)
     {
-        return new GamePeer(initRequest);
+        var Peer = new GamePeer(initRequest);
+        return Peer;
     }
 
     protected override void Setup()

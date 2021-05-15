@@ -12,11 +12,8 @@ namespace State
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GameStateActive()
-        {
-        }
-
-        protected override void Initialize(IObservable<OperationPacket> PacketObservable)
+        public GameStateActive(GamePeer Peer)
+            : base(Peer)
         {
         }
     }

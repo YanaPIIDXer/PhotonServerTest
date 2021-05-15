@@ -14,13 +14,10 @@ namespace State
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public GameStateTitle()
+        public GameStateTitle(GamePeer Peer)
+            : base(Peer)
         {
-        }
-
-        protected override void Initialize(IObservable<OperationPacket> PacketObservable)
-        {
-            PacketObservable
+            Peer.OnRecvRequest
                 .Where((Packet) => Packet.Code == EOperationCode.LogIn)
                 .Subscribe((Packet) => OnRecvLogInRequest(Packet));
         }
@@ -32,9 +29,9 @@ namespace State
         private void OnRecvLogInRequest(OperationPacket Packet)
         {
             OperationPacket Response = new OperationPacket(EOperationCode.LogIn);
-            SendResponse(Response);
+            Peer.SendResponsePacket(Response);
 
-            ChangeState<GameStateActive>();
+            Peer.ToActiveState();
         }
     }
 }

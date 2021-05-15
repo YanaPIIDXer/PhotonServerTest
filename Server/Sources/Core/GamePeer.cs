@@ -25,8 +25,7 @@ public class GamePeer : ClientPeer
 
     public GamePeer(InitRequest initRequest) : base(initRequest)
     {
-        CurrentState = new GameStateTitle();
-        CurrentState.SetPeer(this);
+        CurrentState = new GameStateTitle(this);
     }
 
     protected override void OnDisconnect(DisconnectReason reasonCode, string reasonDetail)
@@ -40,12 +39,11 @@ public class GamePeer : ClientPeer
     }
 
     /// <summary>
-    /// 次のStateを設定
+    /// ActiveStateに遷移
     /// </summary>
-    /// <param name="NextState">次のState</param>
-    public void SetNextState(GameState NextState)
+    public void ToActiveState()
     {
-        CurrentState = NextState;
+        CurrentState = new GameStateActive(this);
     }
 
     /// <summary>
