@@ -40,6 +40,16 @@ public class GamePeer : ClientPeer
     /// </summary>
     private GameState CurrentState = null;
 
+    /// <summary>
+    /// 切断Subject
+    /// </summary>
+    private Subject<DisconnectReason> OnDisconnectedSubject = new Subject<DisconnectReason>();
+
+    /// <summary>
+    /// 切断された
+    /// </summary>
+    public IObservable<DisconnectReason> OnDisconnected { get { return OnDisconnectedSubject; } }
+
     public GamePeer(InitRequest initRequest) : base(initRequest)
     {
         CurrentState = new GameStateTitle(this);
@@ -47,6 +57,7 @@ public class GamePeer : ClientPeer
 
     protected override void OnDisconnect(DisconnectReason reasonCode, string reasonDetail)
     {
+        OnDisconnectedSubject.OnNext(reasonCode);
     }
 
     protected override void OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters)
