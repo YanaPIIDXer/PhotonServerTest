@@ -4,6 +4,7 @@ using Common.Packet;
 using System;
 using System.Reactive.Subjects;
 using State;
+using System.Reactive;
 
 public class GamePeer : ClientPeer
 {
@@ -16,6 +17,16 @@ public class GamePeer : ClientPeer
     /// リクエストを受信した
     /// </summary>
     public IObservable<OperationPacket> OnRecvRequest { get { return OnRecvRequestSubject; } }
+
+    /// <summary>
+    /// アクティブステート遷移Subject
+    /// </summary>
+    private Subject<Unit> OnActiveStateSubject = new Subject<Unit>();
+
+    /// <summary>
+    /// アクティブステートに遷移した
+    /// </summary>
+    public IObservable<Unit> OnActiveState { get { return OnActiveStateSubject; } }
 
     /// <summary>
     /// 現在のゲームステート
