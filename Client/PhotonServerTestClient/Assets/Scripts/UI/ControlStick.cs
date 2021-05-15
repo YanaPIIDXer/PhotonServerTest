@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using System;
 
 namespace Game.UI
 {
@@ -13,6 +15,16 @@ namespace Game.UI
         /// バーチャルスティック
         /// </summary>
         private FixedJoystick VirtualStick = null;
+
+        /// <summary>
+        /// 入力量プロパティ
+        /// </summary>
+        private ReactiveProperty<Vector2> InputProperty = new ReactiveProperty<Vector2>(Vector2.zero);
+
+        /// <summary>
+        /// 入力
+        /// </summary>
+        public IObservable<Vector2> OnInput { get { return InputProperty; } }
 
         void Awake()
         {
@@ -41,6 +53,8 @@ namespace Game.UI
             }
             VirtualStick.ForceMoveHandle(KeyInput.normalized);
 #endif
+            Vector2 StickInput = new Vector2(VirtualStick.Horizontal, VirtualStick.Vertical);
+            InputProperty.Value = StickInput;
         }
     }
 }
