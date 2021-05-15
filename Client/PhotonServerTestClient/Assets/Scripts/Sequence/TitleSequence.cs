@@ -32,6 +32,8 @@ namespace Game.Sequence
                 .Where((Packet) => Packet.Code == EOperationCode.LogIn)
                 .Subscribe((Packet) =>
                 {
+                    // TODO:UIのリセットとシーン遷移を同時にやってくれるクラスを作りたい
+                    UIManager.Instance.RemoveAll();
                     SceneManager.LoadScene("Game");
                 }).AddTo(gameObject);
         }
