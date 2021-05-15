@@ -26,6 +26,9 @@ namespace Game.UI
         /// </summary>
         public IObservable<Vector2> OnInput { get { return InputProperty; } }
 
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        private Vector2 PrevKeyInput = Vector2.zero;
+#endif
         void Awake()
         {
             VirtualStick = GetComponent<FixedJoystick>();
@@ -51,7 +54,11 @@ namespace Game.UI
             {
                 KeyInput.x = -1.0f;
             }
-            VirtualStick.ForceMoveHandle(KeyInput.normalized);
+            if (KeyInput.sqrMagnitude != 0.0f || PrevKeyInput.sqrMagnitude != 0.0f)
+            {
+                VirtualStick.ForceMoveHandle(KeyInput.normalized);
+            }
+            PrevKeyInput = KeyInput;
 #endif
             Vector2 StickInput = new Vector2(VirtualStick.Horizontal, VirtualStick.Vertical);
             InputProperty.Value = StickInput;
