@@ -37,6 +37,21 @@ namespace Game.UI
             DontDestroyOnLoad(gameObject);
         }
 
+        /// <summary>
+        /// 全消去
+        /// </summary>
+        public void RemoveAll()
+        {
+            Transform[] Trs = { BackCanvasTransform, MiddleCanvasTransform, FrontCanvasTransform };
+            foreach (var Tr in Trs)
+            {
+                while (Tr.childCount != 0)
+                {
+                    Destroy(Tr.GetChild(0).gameObject);
+                }
+            }
+        }
+
         #region Singleton
         public static UIManager Instance
         {
