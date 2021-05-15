@@ -40,6 +40,17 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     private Vector2 input = Vector2.zero;
 
+    /// <summary>
+    /// スティックを強制移動
+    /// </summary>
+    /// <param name="location">位置</param>
+    public void ForceMoveHandle(Vector2 location)
+    {
+        Vector2 radius = background.sizeDelta / 2;
+        input = location;
+        handle.anchoredPosition = location * radius * handleRange;
+    }
+
     protected virtual void Start()
     {
         HandleRange = handleRange;
