@@ -1,3 +1,7 @@
+using System;
+using System.Reactive.Subjects;
+using UnityEngine;
+
 namespace Character.Player
 {
     /// <summary>
@@ -17,6 +21,15 @@ namespace Character.Player
         public Player(GamePeer Peer)
         {
             this.Peer = Peer;
+        }
+
+        /// <summary>
+        /// 移動
+        /// </summary>
+        /// <param name="ToPosition">移動先</param>
+        public void Move(Vector3 ToPosition)
+        {
+            Position = ToPosition;
         }
     }
 }

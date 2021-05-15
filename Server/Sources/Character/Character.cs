@@ -10,6 +10,6 @@ namespace Character
         /// <summary>
         /// 座標
         /// </summary>
-        public Vector3 Position { get; private set; }
+        public Vector3 Position { get; protected set; }
     }
 }
