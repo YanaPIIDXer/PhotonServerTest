@@ -5,9 +5,15 @@ using System;
 using System.Reactive.Subjects;
 using State;
 using System.Reactive;
+using Character.Player;
 
 public class GamePeer : ClientPeer
 {
+    /// <summary>
+    /// プレイヤーキャラ
+    /// </summary>
+    public Player PlayerCharacter { get; private set; }
+
     /// <summary>
     /// リクエスト受信Subject
     /// </summary>
@@ -55,6 +61,8 @@ public class GamePeer : ClientPeer
     public void ToActiveState()
     {
         CurrentState = new GameStateActive(this);
+        PlayerCharacter = new Player(this);
+        OnActiveStateSubject.OnNext(Unit.Default);
     }
 
     /// <summary>
