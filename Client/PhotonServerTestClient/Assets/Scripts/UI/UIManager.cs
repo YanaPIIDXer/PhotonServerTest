@@ -32,6 +32,11 @@ namespace Game.UI
         [SerializeField]
         private Transform FrontCanvasTransform = null;
 
+        void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
         #region Singleton
         public static UIManager Instance
         {
