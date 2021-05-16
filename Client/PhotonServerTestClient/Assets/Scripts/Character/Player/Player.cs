@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UniRx;
 using Game.Character.Player.Component;
+using Game.Character.Component;
 
 namespace Game.Character.Player
 {
@@ -25,6 +26,16 @@ namespace Game.Character.Player
             // ローカルキャラの移動に附随して移動パケット送信コンポーネントも
             MovePacketSender MoveSender = new MovePacketSender();
             AddCharacterComponent(MoveSender);
+        }
+
+        /// <summary>
+        /// 他人の移動Componentをセットアップ
+        /// </summary>
+        public void SetupRemoteMovementComponent()
+        {
+            RemoteCharacterMovement Movement = new RemoteCharacterMovement();
+            OnRecvMove = Movement.SetMove;
+            AddCharacterComponent(Movement);
         }
     }
 }

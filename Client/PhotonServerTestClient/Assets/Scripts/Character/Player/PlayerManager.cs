@@ -42,6 +42,15 @@ namespace Game.Character.Player
                 }).AddTo(gameObject);
 
             ConnectionClient.OnRecvEvent
+                .Where((Packet) => Packet.Code == EEventCode.PlayerMove)
+                .Subscribe((Packet) =>
+                {
+                    var Id = Packet.GetParam<int>(0);
+                    var Pos = Packet.GetParam<Vector3>(1);
+                    Players[Id].RecvMove(Pos);
+                }).AddTo(gameObject);
+
+            ConnectionClient.OnRecvEvent
                 .Where((Packet) => Packet.Code == EEventCode.PlayerLeave)
                 .Subscribe((Packet) =>
                 {
@@ -66,6 +75,7 @@ namespace Game.Character.Player
             Debug.Assert(PlayerObj != null, "Player Instantiate Failed.");
 
             var Player = PlayerObj.GetComponent<Player>();
+            Player.SetupRemoteMovementComponent();
             Players.Add(Id, Player);
         }
     }
