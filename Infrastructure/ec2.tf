@@ -1,6 +1,6 @@
 resource "aws_instance" "photon_server" {
     ami           = "ami-09cf6a62116b95ed8"     // 英語版Editionだが止む無し
-    instance_type = "t2.micro"
+    instance_type = "t3.large"        // ランニングコストかかるけど、t2.microだと話にならない
     associate_public_ip_address = true
     key_name = "key"
 
