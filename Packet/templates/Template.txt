@@ -4,6 +4,8 @@ namespace Common.Packet
 {
     public class $CLASS_NAME$ : ISerializable
 	{
+		$PACKET_ID$
+
 		$ENUMS$
 
 		$MEMBERS$

@@ -53,7 +53,7 @@ namespace NativePacketGenerator
                 byte Count = (byte)(1 << IDShiftCount);
                 foreach (var Class in Classes)
                 {
-                    if (!Class.IsPureClass)
+                    if (!string.IsNullOrEmpty(Class.PacketID))
                     {
                         IDs += "/// <summary>\n\t\t/// " + Class.Comment + "\n\t\t/// </summary>\n\t\t";
                         string Str = Class.PacketID + " = " + string.Format("0x{0:X2}", Count);

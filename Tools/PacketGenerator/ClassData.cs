@@ -131,7 +131,7 @@ namespace NativePacketGenerator
         /// <summary>
         /// パケットＩＤ
         /// </summary>
-        public string PacketID { get; set; }
+        public string PacketID { get; set; } = null;
 
         /// <summary>
         /// クラスコメント

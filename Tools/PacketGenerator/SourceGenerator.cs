@@ -134,6 +134,14 @@ namespace NativePacketGenerator
             // クラス名.
             Template = Template.Replace("$CLASS_NAME$", Class.ClassName);
 
+            // パケットID
+            string PacketId = "";
+            if (Class.PacketID != null)
+            {
+                PacketId = "public static byte PacketID { get { return (byte) EPacketID." + Class.PacketID + "; } }";
+            }
+            Template = Template.Replace("$PACKET_ID$", PacketId);
+
             // enum
             string Enums = "";
             foreach (var KeyValue in Class.EnumList)
@@ -174,10 +182,6 @@ namespace NativePacketGenerator
 
             // メンバを押し込む
             string PutMembers = "";
-            if (Class.IsProcessPacket)
-            {
-                PutMembers += "ClientId = InClientId;\n\t\t";
-            }
             for (int i = 0; i < Class.Members.Count; i++)
             {
                 PutMembers += "this." + Class.Members[i].Name + " = " + Class.Members[i].Name + ";\n\t\t\t";
@@ -185,10 +189,6 @@ namespace NativePacketGenerator
             Template = Template.Replace("$PUT_MEMBERS$", PutMembers);
 
             string SerializeFunctions = "";
-            if (Class.IsProcessPacket)
-            {
-                SerializeFunctions += "ProcessPacketBase::Serialize(pStream);\n\t\t\t";
-            }
             for (int i = 0; i < Class.Members.Count; i++)
             {
                 var Member = Class.Members[i];

@@ -4,6 +4,8 @@ namespace Common.Packet
 {
     public class PacketPlayerList : ISerializable
 	{
+		public static byte PacketID { get { return (byte) EPacketID.PlayerList; } }
+
 		
 
 		/// <summary>
