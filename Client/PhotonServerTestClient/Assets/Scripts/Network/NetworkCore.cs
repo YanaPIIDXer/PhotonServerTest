@@ -5,11 +5,11 @@ using ExitGames.Client.Photon;
 using UniRx;
 using System;
 using Common.Code;
+using Common.Packet;
+using Common.Stream;
 
 namespace Game.Network
 {
-    using PacketParam = Dictionary<byte, object>;
-
     /// <summary>
     /// ネットワークコア
     /// </summary>
@@ -61,24 +61,24 @@ namespace Game.Network
         /// <summary>
         /// イベントに対応したSubjectを保持するDictionary
         /// </summary>
-        private Dictionary<byte, Subject<PacketParam>> EventDic = new Dictionary<byte, Subject<PacketParam>>();
+        private Dictionary<byte, Subject<IDictioanryStream>> EventDic = new Dictionary<byte, Subject<IDictioanryStream>>();
 
         /// <summary>
         /// レスポンスのハンドラを保持するDictionary
         /// </summary>
-        private Dictionary<byte, Action<PacketParam>> ResponseHandlers = new Dictionary<byte, Action<PacketParam>>();
+        private Dictionary<byte, Action<IDictioanryStream>> ResponseHandlers = new Dictionary<byte, Action<IDictioanryStream>>();
 
         /// <summary>
         /// イベントに対応したObservable
         /// </summary>
         /// <param name="Code">イベントコード</param>
         /// <returns>Observable</returns>
-        public IObservable<PacketParam> OnEventObservable(EEventCode Code)
+        public IObservable<IDictioanryStream> OnEventObservable(EEventCode Code)
         {
             byte ByteCode = (byte)Code;
             if (!EventDic.ContainsKey(ByteCode))
             {
-                EventDic[ByteCode] = new Subject<PacketParam>();
+                EventDic[ByteCode] = new Subject<IDictioanryStream>();
             }
             return EventDic[ByteCode];
         }
@@ -114,9 +114,9 @@ namespace Game.Network
         /// リクエスト送信
         /// </summary>
         /// <param name="Code">オペレーションコード</param>
-        /// <param name="Params">パラメータ</param>
+        /// <param name="SendPacket">送信パケット</param>
         /// <param name="ResponseHandler">リクエストに対応するレスポンスのハンドラ</param>
-        public void SendRequest(EOperationCode Code, PacketParam Params, Action<PacketParam> ResponseHandler)
+        public void SendRequest(EOperationCode Code, Packet SendPacket, Action<IDictioanryStream> ResponseHandler)
         {
             if (Peer == null)
             {
@@ -125,25 +125,19 @@ namespace Game.Network
             }
             byte ByteCode = (byte)Code;
             ResponseHandlers.Add(ByteCode, ResponseHandler);
-            Peer.OpCustom(ByteCode, Params, false);
-        }
 
-        /// <summary>
-        /// リクエスト送信
-        /// </summary>
-        /// <param name="Code">オペレーションコード</param>
-        /// <param name="Params">パラメータ</param>
-        /// <param name="ResponseHandler">リクエストに対応するレスポンスのハンドラ</param>
-        public void SendRequest(EOperationCode Code, Action<PacketParam> ResponseHandler)
-        {
-            SendRequest(Code, new PacketParam(), ResponseHandler);
+            DictionaryStreamWriter Writer = new DictionaryStreamWriter();
+            SendPacket.Serialize(Writer);
+            Peer.OpCustom(ByteCode, Writer.Dest, false);
         }
 
         public void OnOperationResponse(OperationResponse operationResponse)
         {
             byte Code = operationResponse.OperationCode;
             if (!ResponseHandlers.ContainsKey(Code)) { throw new Exception(string.Format("{0} に対応するハンドラがない", ((EOperationCode)Code).ToString())); }
-            ResponseHandlers[Code]?.Invoke(operationResponse.Parameters);
+
+            DictionaryStreamReader Reader = new DictionaryStreamReader(operationResponse.Parameters);
+            ResponseHandlers[Code]?.Invoke(Reader);
             ResponseHandlers.Remove(Code);
         }
 
@@ -151,31 +145,26 @@ namespace Game.Network
         /// レスポンスの伴わないパケットを送信
         /// </summary>
         /// <param name="Code">オペレーションコード</param>
-        /// <param name="Params">パラメータ</param>
-        public void SendReport(EOperationCode Code, PacketParam Params)
+        /// <param name="SendPacket">パラメータ</param>
+        public void SendReport(EOperationCode Code, Packet SendPacket)
         {
             if (Peer == null)
             {
                 Debug.LogError("Peer is null.");
                 return;
             }
-            Peer.OpCustom((byte)Code, Params, false);
-        }
-
-        /// <summary>
-        /// レスポンスの伴わないパケットを送信
-        /// </summary>
-        /// <param name="Code">オペレーションコード</param>
-        public void SendReport(EOperationCode Code)
-        {
-            SendReport(Code, new PacketParam());
+            DictionaryStreamWriter Writer = new DictionaryStreamWriter();
+            SendPacket.Serialize(Writer);
+            Peer.OpCustom((byte)Code, Writer.Dest, false);
         }
 
         public void OnEvent(EventData eventData)
         {
             byte Code = eventData.Code;
             if (!EventDic.ContainsKey(Code)) { return; }        // イベント購読者がいない
-            EventDic[Code].OnNext(eventData.Parameters);
+
+            DictionaryStreamReader Reader = new DictionaryStreamReader(eventData.Parameters);
+            EventDic[Code].OnNext(Reader);
         }
 
         public void DebugReturn(DebugLevel level, string message)
