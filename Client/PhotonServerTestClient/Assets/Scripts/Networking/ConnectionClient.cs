@@ -112,7 +112,6 @@ namespace Game.Networking
         public void OnEvent(EventData eventData)
         {
             EventPacket Packet = new EventPacket(eventData.Code, eventData.Parameters);
-            Debug.Log("Event:" + Packet.Code);
             OnRecvEventSubject.OnNext(Packet);
         }
 

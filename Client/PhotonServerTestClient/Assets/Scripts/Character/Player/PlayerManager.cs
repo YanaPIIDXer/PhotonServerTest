@@ -38,7 +38,6 @@ namespace Game.Character.Player
                     {
                         SpawnPlayer(KeyValue.Key);
                         Players[KeyValue.Key].transform.position = KeyValue.Value;  // いいのかこれｗ
-                        Debug.Log(KeyValue.ToString());
                     }
                 }).AddTo(gameObject);
 

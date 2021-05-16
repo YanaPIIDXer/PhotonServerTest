@@ -20,6 +20,10 @@ namespace State
             Peer.OnRecvRequest
                 .Where((Packet) => Packet.Code == EOperationCode.LogIn)
                 .Subscribe((Packet) => OnRecvLogInRequest(Packet));
+
+            Peer.OnRecvRequest
+                .Where((Packet) => Packet.Code == EOperationCode.Ready)
+                .Subscribe((_) => Peer.ToActiveState());
         }
 
         /// <summary>
@@ -30,8 +34,6 @@ namespace State
         {
             OperationPacket Response = new OperationPacket(EOperationCode.LogIn);
             Peer.SendResponsePacket(Response);
-
-            Peer.ToActiveState();
         }
     }
 }
