@@ -27,7 +27,7 @@ namespace Game.Character.Player
                 {
                     var Id = Packet.GetParam<int>(0);
                     SpawnPlayer(Id);
-                });
+                }).AddTo(gameObject);
 
             ConnectionClient.OnRecvEvent
                 .Where((Packet) => Packet.Code == EEventCode.PlayerList)
@@ -40,7 +40,7 @@ namespace Game.Character.Player
                         Players[KeyValue.Key].transform.position = KeyValue.Value;  // いいのかこれｗ
                         Debug.Log(KeyValue.ToString());
                     }
-                });
+                }).AddTo(gameObject);
 
             ConnectionClient.OnRecvEvent
                 .Where((Packet) => Packet.Code == EEventCode.PlayerLeave)
@@ -49,7 +49,7 @@ namespace Game.Character.Player
                     var Id = Packet.GetParam<int>(0);
                     Destroy(Players[Id].gameObject);
                     Players.Remove(Id);
-                });
+                }).AddTo(gameObject);
         }
 
         /// <summary>
