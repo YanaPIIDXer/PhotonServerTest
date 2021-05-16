@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using Common.Code;
 using Photon.SocketServer;
+using Common.Packet;
+using Common.Stream;
 
 namespace GameState
 {
-    using PacketParam = Dictionary<byte, object>;
-
     /// <summary>
     /// ゲームステート基底クラス
     /// </summary>
@@ -20,14 +20,14 @@ namespace GameState
         /// <summary>
         /// オペレーションのハンドラDictionary
         /// </summary>
-        private Dictionary<EOperationCode, Func<PacketParam, PacketParam>> OperationHandlers = new Dictionary<EOperationCode, Func<PacketParam, PacketParam>>();
+        private Dictionary<EOperationCode, Func<IDictioanryStream, Packet>> OperationHandlers = new Dictionary<EOperationCode, Func<IDictioanryStream, Packet>>();
 
         /// <summary>
         /// オペレーションのハンドラ追加
         /// </summary>
         /// <param name="Code">オペレーションコード</param>
         /// <param name="Handler">ハンドラ</param>
-        protected void AddOperationHandler(EOperationCode Code, Func<PacketParam, PacketParam> Handler)
+        protected void AddOperationHandler(EOperationCode Code, Func<IDictioanryStream, Packet> Handler)
         {
             OperationHandlers.Add(Code, Handler);
         }
@@ -46,14 +46,17 @@ namespace GameState
         /// </summary>
         /// <param name="Code">オペレーションコード</param>
         /// <param name="Params">パラメータ</param>
-        public void OnRecvOperation(EOperationCode Code, PacketParam Params)
+        public void OnRecvOperation(EOperationCode Code, Dictionary<byte, object> Params)
         {
             if (OperationHandlers.ContainsKey(Code))
             {
-                var ResponseParam = OperationHandlers[Code]?.Invoke(Params);
-                if (ResponseParam != null)      // ResponseParamがnullならReportとして扱う
+                DictionaryStreamReader Reader = new DictionaryStreamReader(Params);
+                var ResponsePacket = OperationHandlers[Code]?.Invoke(Reader);
+                if (ResponsePacket != null)      // ResponsePacketがnullならReportとして扱う
                 {
-                    var Response = new OperationResponse((byte)Code, ResponseParam);
+                    DictionaryStreamWriter Writer = new DictionaryStreamWriter();
+                    ResponsePacket.Serialize(Writer);
+                    var Response = new OperationResponse((byte)Code, Writer.Dest);
                     Parent.SendOperationResponse(Response, new SendParameters());
                 }
             }

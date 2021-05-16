@@ -3,6 +3,8 @@ using Photon.SocketServer;
 using PhotonHostRuntimeInterfaces;
 using GameState;
 using Common.Code;
+using Common.Packet;
+using Common.Stream;
 
 public class GamePeer : ClientPeer
 {
@@ -20,20 +22,13 @@ public class GamePeer : ClientPeer
     /// イベント送信
     /// </summary>
     /// <param name="Code">イベントコード</param>
-    /// <param name="Params">パラメータ</param>
-    public void SendEvent(EEventCode Code, Dictionary<byte, object> Params)
+    /// <param name="SendPacket">送信パケット</param>
+    public void SendEvent(EEventCode Code, Packet SendPacket)
     {
-        var Data = new EventData((byte)Code, Params);
+        DictionaryStreamWriter Writer = new DictionaryStreamWriter();
+        SendPacket.Serialize(Writer);
+        var Data = new EventData((byte)Code, Writer.Dest);
         SendEvent(Data, new SendParameters());
-    }
-
-    /// <summary>
-    /// イベント送信
-    /// </summary>
-    /// <param name="Code">イベントコード</param>
-    public void SendEvent(EEventCode Code)
-    {
-        SendEvent(Code, new Dictionary<byte, object>());
     }
 
     protected override void OnDisconnect(DisconnectReason reasonCode, string reasonDetail)
