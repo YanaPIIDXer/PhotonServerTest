@@ -2,44 +2,30 @@
 
 namespace Common.Packet
 {
-    public class Vec3 : ISerializable
+    public class PacketPlayerList : ISerializable
 	{
 		
 
 		/// <summary>
-		///  X
+		///  プレイヤーリスト
 		/// </summary>
-		public float X = new float();
-
-		/// <summary>
-		///  Y
-		/// </summary>
-		public float Y = new float();
-
-		/// <summary>
-		///  Z
-		/// </summary>
-		public float Z = new float();
+		public FlexArray<CharacterData> List = new FlexArray<CharacterData>();
 
 		
 
-		public Vec3()
+		public PacketPlayerList()
 		{
 		}
 
-		public Vec3(float X, float Y, float Z)
+		public PacketPlayerList(FlexArray<CharacterData> List)
 		{
-			this.X = X;
-			this.Y = Y;
-			this.Z = Z;
+			this.List = List;
 			
 		}
 
 		public bool Serialize(IMemoryStream Stream)
 		{
-			Stream.Serialize(ref X);
-			Stream.Serialize(ref Y);
-			Stream.Serialize(ref Z);
+			List.Serialize(Stream);
 			
 			return true;
 		}
@@ -47,7 +33,7 @@ namespace Common.Packet
 		public static byte[] SerializeObject(object customType)
 		{
 			var Stream = new MemoryStreamWriter();
-			var Obj = (Vec3)customType;
+			var Obj = (PacketPlayerList)customType;
 			Obj.Serialize(Stream);
 			return Stream.Buffer.ToArray();
 		}
@@ -55,7 +41,7 @@ namespace Common.Packet
 		public static object DeserializeObject(byte[] data)
 		{
 			var Stream = new MemoryStreamReader(data);
-			var Obj = new Vec3();
+			var Obj = new PacketPlayerList();
 			Obj.Serialize(Stream);
 			return Obj;
 		}

@@ -7,6 +7,7 @@ namespace Common.Packet
 {
     /// <summary>
     /// 色々なシリアライズメソッドの定義
+    /// TODO:仕組みを置き換えたら消滅する
     /// </summary>
     public static class SerializeMethods
     {
@@ -28,22 +29,6 @@ namespace Common.Packet
             Vec.y = BitConverter.ToSingle(data, Size);
             Vec.z = BitConverter.ToSingle(data, Size * 2);
             return Vec;
-        }
-
-        public static byte[] SerializePlayerList(object customType)
-        {
-            var List = (PlayerList)customType;
-            var Stream = new MemoryStreamWriter();
-            List.Serialize(Stream);
-            return Stream.Buffer.ToArray();
-        }
-
-        public static object DeserializePlayerList(byte[] data)
-        {
-            var List = new PlayerList();
-            var Stream = new MemoryStreamReader(data);
-            List.Serialize(Stream);
-            return List;
         }
     }
 }

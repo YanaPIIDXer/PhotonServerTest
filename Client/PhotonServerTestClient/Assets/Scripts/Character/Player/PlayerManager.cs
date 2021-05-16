@@ -33,11 +33,11 @@ namespace Game.Character.Player
                 .Where((Packet) => Packet.Code == EEventCode.PlayerList)
                 .Subscribe((Packet) =>
                 {
-                    PlayerList List = Packet.GetParam<PlayerList>(0);
+                    PacketPlayerList List = Packet.GetParam<PacketPlayerList>(0);
                     foreach (var Data in List.List)
                     {
                         SpawnPlayer(Data.Id);
-                        Players[Data.Id].transform.position = new Vector3(Data.X, Data.Y, Data.Z);  // いいのかこれｗ
+                        Players[Data.Id].transform.position = new Vector3(Data.Position.X, Data.Position.Y, Data.Position.Z);  // いいのかこれｗ
                     }
                 }).AddTo(gameObject);
 

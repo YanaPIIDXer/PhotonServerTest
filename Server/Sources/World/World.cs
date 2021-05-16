@@ -33,14 +33,11 @@ namespace World
             EnterPacket.SetParam(0, Peer.PlayerCharacter.Id);
             BroadcastEvent(EnterPacket);
 
-            PlayerList List = new PlayerList();
+            PacketPlayerList List = new PacketPlayerList();
             foreach (var Other in Peers)
             {
-                var Data = new PlayerData();
-                Data.Id = Other.PlayerCharacter.Id;
-                Data.X = Other.PlayerCharacter.Position.x;
-                Data.Y = Other.PlayerCharacter.Position.y;
-                Data.Z = Other.PlayerCharacter.Position.z;
+                var Pos = new Vec3(Other.PlayerCharacter.Position.x, Other.PlayerCharacter.Position.y, Other.PlayerCharacter.Position.z);
+                var Data = new CharacterData(Other.PlayerCharacter.Id, Pos);
                 List.List.Add(Data);
             }
             EventPacket ListPacket = new EventPacket(EEventCode.PlayerList);

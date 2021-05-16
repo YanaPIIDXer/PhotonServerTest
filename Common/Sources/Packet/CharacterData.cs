@@ -9,12 +9,12 @@ namespace Common.Packet
 		/// <summary>
 		///  ID
 		/// </summary>
-		public int Id;
+		public int Id = new int();
 
 		/// <summary>
 		///  座標
 		/// </summary>
-		public Vec3 Position;
+		public Vec3 Position = new Vec3();
 
 		
 
