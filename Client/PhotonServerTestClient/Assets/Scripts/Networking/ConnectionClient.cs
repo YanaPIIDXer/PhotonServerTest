@@ -138,10 +138,8 @@ namespace Game.Networking
         /// </summary>
         private void RegisterCustomClasses()
         {
-            PhotonPeer.RegisterType(typeof(Vector3), 1, SerializeMethods.SerializeVector3, SerializeMethods.DeserializeVector3);
-            PhotonPeer.RegisterType(typeof(PacketPlayerList), 2, PacketPlayerList.SerializeObject, PacketPlayerList.DeserializeObject);
-            PhotonPeer.RegisterType(typeof(CharacterData), 3, CharacterData.SerializeObject, CharacterData.DeserializeObject);
-            PhotonPeer.RegisterType(typeof(Vec3), 4, Vec3.SerializeObject, Vec3.DeserializeObject);
+            PhotonPeer.RegisterType(typeof(Vector3), 200, SerializeMethods.SerializeVector3, SerializeMethods.DeserializeVector3);
+            PhotonPeer.RegisterType(typeof(PacketPlayerList), PacketPlayerList.PacketID, PacketPlayerList.SerializeObject, PacketPlayerList.DeserializeObject);
         }
     }
 }
