@@ -25,6 +25,8 @@ namespace Common.Packet
 
 		
 
+		
+
 		public Vec3()
 		{
 		}

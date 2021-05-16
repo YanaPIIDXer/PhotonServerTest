@@ -2,7 +2,7 @@
 
 namespace Common.Packet
 {
-    public class PacketOtherPlayerMove : ISerializable
+    public class PacketOtherPlayerMove : Packet, ISerializable
 	{
 		public static byte PacketID { get { return (byte) EPacketID.OtherPlayerMove; } }
 
@@ -19,6 +19,8 @@ namespace Common.Packet
 		public Vec3 Position = new Vec3();
 
 		
+
+		protected override byte SendCode { get { return PacketID; } }
 
 		public PacketOtherPlayerMove()
 		{

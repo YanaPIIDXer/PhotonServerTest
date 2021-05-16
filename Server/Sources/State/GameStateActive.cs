@@ -1,7 +1,6 @@
 using System;
 using System.Reactive.Linq;
 using Common.Packet;
-using Common.Code;
 using UnityEngine;
 
 namespace State
@@ -17,19 +16,17 @@ namespace State
         public GameStateActive(GamePeer Peer)
             : base(Peer)
         {
-            Peer.OnRecvRequest
-                .Where((Packet) => Packet.Code == EOperationCode.Move)
-                .Subscribe(OnCharacterMove);
+            Peer.AddRequestHandler(EPacketID.PlayerMove, OnCharacterMove);
         }
 
         /// <summary>
         /// キャラが移動した
         /// </summary>
-        /// <param name="Packet">パケット</param>
-        private void OnCharacterMove(OperationPacket Packet)
+        /// <param name="Obj">パケット</param>
+        private void OnCharacterMove(object Obj)
         {
-            var Info = Packet.GetParam<PacketPlayerMove>(0);
-            Peer.PlayerCharacter.Move(Info.Position.ToVector3());
+            var Packet = (PacketPlayerMove)Obj;
+            Peer.PlayerCharacter.Move(Packet.Position.ToVector3());
         }
     }
 }

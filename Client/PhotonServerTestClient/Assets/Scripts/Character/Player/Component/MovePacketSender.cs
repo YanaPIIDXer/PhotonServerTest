@@ -7,7 +7,6 @@ using UniRx.Operators;
 using System;
 using Common.Packet;
 using Game.Networking;
-using Common.Code;
 
 namespace Game.Character.Player.Component
 {
@@ -36,9 +35,7 @@ namespace Game.Character.Player.Component
                 .Skip(1)
                 .Subscribe((Pos) =>
                 {
-                    OperationPacket Packet = new OperationPacket(EOperationCode.Move);
-                    Packet.SetParam(0, new PacketPlayerMove(Pos.ToVec3()));
-                    ConnectionClient.Instance.SendRequest(Packet);
+                    ConnectionClient.Instance.SendRequest(new PacketPlayerMove(Pos.ToVec3()));
                 });
         }
 
@@ -56,8 +53,7 @@ namespace Game.Character.Player.Component
         public override void OnUpdate()
         {
             // Trans.positionの値をそのままReacrivePropertyに渡すと、
-            // float型の誤差の影響で変化していないにも関わらず「変化した」と見做される。
-            // （float型同士を == で比較してはならないのと同じ）
+            // 恐らくRigidbodyの影響なのか、ほぼ動いていないのに動いたと見做される。
             // その為、各要素の小数点第二位以下を切り捨てて扱うものとする。
             var Pos = Trans.position;
             Pos.x = Mathf.Floor(Pos.x * 10) * 0.1f;

@@ -2,13 +2,15 @@
 
 namespace Common.Packet
 {
-    public class PacketLogInRequest : ISerializable
+    public class PacketLogInRequest : Packet, ISerializable
 	{
 		public static byte PacketID { get { return (byte) EPacketID.LogInRequest; } }
 
 		
 
 		
+
+		protected override byte SendCode { get { return PacketID; } }
 
 		public PacketLogInRequest()
 		{

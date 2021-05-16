@@ -2,7 +2,7 @@
 
 namespace Common.Packet
 {
-    public class PacketPlayerList : ISerializable
+    public class PacketPlayerList : Packet, ISerializable
 	{
 		public static byte PacketID { get { return (byte) EPacketID.PlayerList; } }
 
@@ -14,6 +14,8 @@ namespace Common.Packet
 		public FlexArray<CharacterData> List = new FlexArray<CharacterData>();
 
 		
+
+		protected override byte SendCode { get { return PacketID; } }
 
 		public PacketPlayerList()
 		{

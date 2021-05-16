@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System;
 using Common.Packet;
-using Common.Code;
 using UnityEngine;
 
 namespace World
@@ -29,19 +28,17 @@ namespace World
         /// <param name="Peer">Peer</param>
         public void AddPeer(GamePeer Peer)
         {
-            EventPacket EnterPacket = new EventPacket(EEventCode.PlayerEnter);
-            EnterPacket.SetParam(0, Peer.PlayerCharacter.Id);
+            var EnterPacket = new PacketPlayerEnter(Peer.PlayerCharacter.Id, Peer.PlayerCharacter.Position.ToVec3());
             BroadcastEvent(EnterPacket);
 
-            PacketPlayerList List = new PacketPlayerList();
+            var List = new FlexArray<CharacterData>();
             foreach (var Other in Peers)
             {
                 var Pos = Other.PlayerCharacter.Position.ToVec3();
                 var Data = new CharacterData(Other.PlayerCharacter.Id, Pos);
-                List.List.Add(Data);
+                List.Add(Data);
             }
-            EventPacket ListPacket = new EventPacket(EEventCode.PlayerList);
-            ListPacket.SetParam(0, List);
+            var ListPacket = new PacketPlayerList(List);
             Peer.SendEventPacket(ListPacket);
 
             Peers.Add(Peer);
@@ -57,9 +54,8 @@ namespace World
         /// <param name="Position">座標</param>
         private void PlayerMoved(GamePeer Peer, Vector3 Position)
         {
-            EventPacket Packet = new EventPacket(EEventCode.PlayerMove);
-            Packet.SetParam(0, new PacketOtherPlayerMove(Peer.PlayerCharacter.Id, Position.ToVec3()));
-            BroadcastEvent(Packet, Peer.ConnectionId);
+            var MovePacket = new PacketOtherPlayerMove(Peer.PlayerCharacter.Id, Position.ToVec3());
+            BroadcastEvent(MovePacket, Peer.ConnectionId);
         }
 
         /// <summary>
@@ -70,23 +66,22 @@ namespace World
         {
             var Id = Peer.PlayerCharacter.Id;
             Peers.Remove(Peer);
-            EventPacket Packet = new EventPacket(EEventCode.PlayerLeave);
-            Packet.SetParam(0, Id);
-            BroadcastEvent(Packet);
+            var LeavePacket = new PacketPlayerLeave(Id);
+            BroadcastEvent(LeavePacket);
         }
 
         /// <summary>
         /// イベントのブロードキャスト
         /// </summary>
-        /// <param name="Packet">パケット</param>
+        /// <param name="SendPacket">パケット</param>
         /// <param name="IgnoreId">無視するID</param>
-        private void BroadcastEvent(EventPacket Packet, int IgnoreId = -1)
+        private void BroadcastEvent(Packet SendPacket, int IgnoreId = -1)
         {
             foreach (var Peer in Peers)
             {
                 if (Peer.ConnectionId != IgnoreId)
                 {
-                    Peer.SendEventPacket(Packet);
+                    Peer.SendEventPacket(SendPacket);
                 }
             }
         }

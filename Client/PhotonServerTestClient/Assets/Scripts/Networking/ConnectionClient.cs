@@ -34,25 +34,17 @@ namespace Game.Networking
         public static IObservable<StatusCode> OnConnectionStatusChanged { get { return ConnectionStatus; } }
 
         /// <summary>
-        /// イベント受信時のSubject
+        /// パケットを受信した
         /// </summary>
-        private static Subject<EventPacket> OnRecvEventSubject = new Subject<EventPacket>();
+        /// <param name="RecvPacket">受信したパケット</param>
+        public delegate void OnRecvPacket(object RecvPacket);
 
         /// <summary>
-        /// イベントを受信した
+        /// パケットハンドラ
         /// </summary>
-        /// <value></value>
-        public static IObservable<EventPacket> OnRecvEvent { get { return OnRecvEventSubject; } }
-
-        /// <summary>
-        /// レスポンス受信時のSubject
-        /// </summary>
-        private static Subject<OperationPacket> OnRecvResponseSubject = new Subject<OperationPacket>();
-
-        /// <summary>
-        /// レスポンスを受信した
-        /// </summary>
-        public static IObservable<OperationPacket> OnRecvResponse { get { return OnRecvResponseSubject; } }
+        /// <typeparam name="EPacketID">パケットＩＤ</typeparam>
+        /// <typeparam name="OnRecvPackett">ハンドリング用delegate</typeparam>
+        private static Dictionary<EPacketID, OnRecvPacket> PacketHandlers = new Dictionary<EPacketID, OnRecvPacket>();
 
         void Awake()
         {
@@ -88,14 +80,32 @@ namespace Game.Networking
         }
 
         /// <summary>
+        /// パケットハンドラ追加
+        /// </summary>
+        /// <param name="ID">パケットＩＤ</param>
+        /// <param name="Handler">ハンドリング用delegate</param>
+        public static void AddPacketHandler(EPacketID ID, OnRecvPacket Handler)
+        {
+            if (!PacketHandlers.ContainsKey(ID))
+            {
+                PacketHandlers.Add(ID, Handler);
+            }
+            else
+            {
+                PacketHandlers[ID] += Handler;
+            }
+        }
+
+        /// <summary>
         /// リクエスト送信
         /// </summary>
-        /// <param name="Packet">パケット</param>
-        public void SendRequest(OperationPacket Packet)
+        /// <param name="SendPacket">パケット</param>
+        public void SendRequest(Packet SendPacket)
         {
-            if (!Peer.OpCustom(Packet.SendCode, Packet.SendParamsDictionary, false))
+            var Data = SendPacket.MakeSendData();
+            if (!Peer.OpCustom(Data.SendCode, Data.SendDictionary, false))
             {
-                DebugReturn(DebugLevel.ERROR, string.Format("SendRequest Failed. Code:{0}", Packet.Code.ToString()));
+                DebugReturn(DebugLevel.ERROR, string.Format("SendRequest Failed. Code:{0}", Data.SendCode));
             }
         }
 
@@ -114,14 +124,20 @@ namespace Game.Networking
 
         public void OnEvent(EventData eventData)
         {
-            EventPacket Packet = new EventPacket(eventData.Code, eventData.Parameters);
-            OnRecvEventSubject.OnNext(Packet);
+            EPacketID Id = (EPacketID)eventData.Code;
+            if (PacketHandlers.ContainsKey(Id))
+            {
+                PacketHandlers[Id].Invoke(eventData.Parameters[0]);
+            }
         }
 
         public void OnOperationResponse(OperationResponse operationResponse)
         {
-            OperationPacket Packet = new OperationPacket(operationResponse.OperationCode, operationResponse.Parameters);
-            OnRecvResponseSubject.OnNext(Packet);
+            EPacketID Id = (EPacketID)operationResponse.OperationCode;
+            if (PacketHandlers.ContainsKey(Id))
+            {
+                PacketHandlers[Id].Invoke(operationResponse.Parameters[0]);
+            }
         }
 
         public void OnStatusChanged(StatusCode statusCode)

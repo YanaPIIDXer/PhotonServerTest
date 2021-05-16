@@ -7,7 +7,6 @@ using UniRx;
 using Game.Character.Player;
 using Game.Networking;
 using Common.Packet;
-using Common.Code;
 
 namespace Game.Sequence
 {
@@ -29,7 +28,7 @@ namespace Game.Sequence
             var InputHandler = UIManager.Show<ControlStick>("Game/PlayerMoveInput", ECanvas.Middle);
             Player.SetupLocalMoveementComponent(InputHandler.UIComponent.OnInput);
 
-            ConnectionClient.Instance.SendRequest(new OperationPacket(EOperationCode.Ready));
+            ConnectionClient.Instance.SendRequest(new PacketClientReady());
         }
     }
 }

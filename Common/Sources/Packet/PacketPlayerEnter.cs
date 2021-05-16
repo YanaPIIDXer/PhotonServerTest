@@ -2,9 +2,9 @@
 
 namespace Common.Packet
 {
-    public class CharacterData : ISerializable
+    public class PacketPlayerEnter : Packet, ISerializable
 	{
-		
+		public static byte PacketID { get { return (byte) EPacketID.PlayerEnter; } }
 
 		
 
@@ -20,13 +20,13 @@ namespace Common.Packet
 
 		
 
-		
+		protected override byte SendCode { get { return PacketID; } }
 
-		public CharacterData()
+		public PacketPlayerEnter()
 		{
 		}
 
-		public CharacterData(int Id, Vec3 Position)
+		public PacketPlayerEnter(int Id, Vec3 Position)
 		{
 			this.Id = Id;
 			this.Position = Position;
@@ -44,7 +44,7 @@ namespace Common.Packet
 		public static byte[] SerializeObject(object customType)
 		{
 			var Stream = new MemoryStreamWriter();
-			var Obj = (CharacterData)customType;
+			var Obj = (PacketPlayerEnter)customType;
 			Obj.Serialize(Stream);
 			return Stream.Buffer.ToArray();
 		}
@@ -52,7 +52,7 @@ namespace Common.Packet
 		public static object DeserializeObject(byte[] data)
 		{
 			var Stream = new MemoryStreamReader(data);
-			var Obj = new CharacterData();
+			var Obj = new PacketPlayerEnter();
 			Obj.Serialize(Stream);
 			return Obj;
 		}

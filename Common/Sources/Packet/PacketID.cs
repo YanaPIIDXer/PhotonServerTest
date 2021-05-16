@@ -19,13 +19,21 @@
 		/// </summary>
 		PlayerList = 0x04,
 		/// <summary>
+		/// プレイヤー登場パケット
+		/// </summary>
+		PlayerEnter = 0x05,
+		/// <summary>
 		/// プレイヤー移動パケット
 		/// </summary>
-		PlayerMove = 0x05,
+		PlayerMove = 0x06,
 		/// <summary>
 		/// 他人移動パケット
 		/// </summary>
-		OtherPlayerMove = 0x06,
+		OtherPlayerMove = 0x07,
+		/// <summary>
+		/// プレイヤー離脱パケット
+		/// </summary>
+		PlayerLeave = 0x08,
 		
 	}
 }

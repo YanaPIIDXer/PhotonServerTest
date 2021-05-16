@@ -6,6 +6,7 @@ using System.Reactive.Subjects;
 using State;
 using System.Reactive;
 using Character.Player;
+using System.Collections.Generic;
 
 public class GamePeer : ClientPeer
 {
@@ -15,14 +16,17 @@ public class GamePeer : ClientPeer
     public Player PlayerCharacter { get; private set; }
 
     /// <summary>
-    /// リクエスト受信Subject
+    /// パケットを受信した
     /// </summary>
-    private Subject<OperationPacket> OnRecvRequestSubject = new Subject<OperationPacket>();
+    /// <param name="RecvPacket">受信したパケット</param>
+    public delegate void OnRecvRequest(object RecvPacket);
 
     /// <summary>
-    /// リクエストを受信した
+    /// リクエストハンドラ
     /// </summary>
-    public IObservable<OperationPacket> OnRecvRequest { get { return OnRecvRequestSubject; } }
+    /// <typeparam name="EPacketID">パケットＩＤ</typeparam>
+    /// <typeparam name="OnRecvRequest">ハンドリング用delegate</typeparam>
+    private Dictionary<EPacketID, OnRecvRequest> RequestHandlers = new Dictionary<EPacketID, OnRecvRequest>();
 
     /// <summary>
     /// アクティブステート遷移Subject
@@ -55,6 +59,23 @@ public class GamePeer : ClientPeer
         CurrentState = new GameStateTitle(this);
     }
 
+    /// <summary>
+    /// リクエストハンドラ追加
+    /// </summary>
+    /// <param name="ID">パケットＩＤ</param>
+    /// <param name="Handler">ハンドリング用delegate</param>
+    public void AddRequestHandler(EPacketID ID, OnRecvRequest Handler)
+    {
+        if (!RequestHandlers.ContainsKey(ID))
+        {
+            RequestHandlers.Add(ID, Handler);
+        }
+        else
+        {
+            RequestHandlers[ID] += Handler;
+        }
+    }
+
     protected override void OnDisconnect(DisconnectReason reasonCode, string reasonDetail)
     {
         OnDisconnectedSubject.OnNext(reasonCode);
@@ -62,8 +83,11 @@ public class GamePeer : ClientPeer
 
     protected override void OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters)
     {
-        OperationPacket Packet = new OperationPacket(operationRequest.OperationCode, operationRequest.Parameters);
-        OnRecvRequestSubject.OnNext(Packet);
+        EPacketID ID = (EPacketID)operationRequest.OperationCode;
+        if (RequestHandlers.ContainsKey(ID))
+        {
+            RequestHandlers[ID].Invoke(operationRequest.Parameters[0]);
+        }
     }
 
     /// <summary>
@@ -79,24 +103,21 @@ public class GamePeer : ClientPeer
     /// <summary>
     /// イベントパケット送信
     /// </summary>
-    /// <param name="Packet">パケット</param>
-    public void SendEventPacket(EventPacket Packet)
+    /// <param name="SendPacket">送信するパケット</param>
+    public void SendEventPacket(Packet SendPacket)
     {
-        byte Code = Packet.SendCode;
-        var Params = Packet.SendParamsDictionary;
-        var Data = new EventData(Code, Params);
-        SendEvent(Data, new SendParameters());
+        var Data = SendPacket.MakeSendData();
+        SendEvent(new EventData(Data.SendCode, Data.SendDictionary), new SendParameters());
     }
 
     /// <summary>
     /// レスポンスパケット送信
     /// </summary>
-    /// <param name="Packet">パケット</param>
-    public void SendResponsePacket(OperationPacket Packet)
+    /// <param name="SendPacket">送信するパケット</param>
+    public void SendResponsePacket(Packet SendPacket)
     {
-        byte Code = Packet.SendCode;
-        var Params = Packet.SendParamsDictionary;
-        var Response = new OperationResponse(Code, Params);
+        var Data = SendPacket.MakeSendData();
+        var Response = new OperationResponse(Data.SendCode, Data.SendDictionary);
         SendOperationResponse(Response, new SendParameters());
     }
 }

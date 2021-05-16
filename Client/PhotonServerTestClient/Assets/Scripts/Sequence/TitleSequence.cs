@@ -4,7 +4,6 @@ using UnityEngine;
 using Game.Networking;
 using System;
 using UniRx;
-using Common.Code;
 using Common.Packet;
 using UnityEngine.SceneManagement;
 using Game.UI;
@@ -20,21 +19,18 @@ namespace Game.Sequence
         {
             UIManager.Show<ConnectionButton>("Title/ConnectionButton", ECanvas.Front);
 
+            ConnectionClient.AddPacketHandler(EPacketID.LogInResult, (_) =>
+            {
+                // TODO:UIのリセットとシーン遷移を同時にやってくれるクラスを作りたい
+                UIManager.Instance.RemoveAll();
+                SceneManager.LoadScene("Game");
+            });
+
             ConnectionClient.OnConnectionStatusChanged
                 .Where((Code) => Code == ExitGames.Client.Photon.StatusCode.Connect)
                 .Subscribe((_) =>
                 {
-                    OperationPacket Packet = new OperationPacket(EOperationCode.LogIn);
-                    ConnectionClient.Instance.SendRequest(Packet);
-                }).AddTo(gameObject);
-
-            ConnectionClient.OnRecvResponse
-                .Where((Packet) => Packet.Code == EOperationCode.LogIn)
-                .Subscribe((Packet) =>
-                {
-                    // TODO:UIのリセットとシーン遷移を同時にやってくれるクラスを作りたい
-                    UIManager.Instance.RemoveAll();
-                    SceneManager.LoadScene("Game");
+                    ConnectionClient.Instance.SendRequest(new PacketLogInRequest());
                 }).AddTo(gameObject);
         }
     }

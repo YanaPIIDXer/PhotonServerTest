@@ -134,13 +134,24 @@ namespace NativePacketGenerator
             // クラス名.
             Template = Template.Replace("$CLASS_NAME$", Class.ClassName);
 
+            // 基底クラス
+            string BaseClass = "";
+            if (Class.PacketID != null)
+            {
+                BaseClass = " Packet,";
+            }
+            Template = Template.Replace("%BASE_CLASS%", BaseClass);
+
             // パケットID
             string PacketId = "";
+            string SendCode = "";
             if (Class.PacketID != null)
             {
                 PacketId = "public static byte PacketID { get { return (byte) EPacketID." + Class.PacketID + "; } }";
+                SendCode = "protected override byte SendCode { get { return PacketID; } }";
             }
             Template = Template.Replace("$PACKET_ID$", PacketId);
+            Template = Template.Replace("$SEND_CODE$", SendCode);
 
             // enum
             string Enums = "";

@@ -10,8 +10,10 @@ namespace Common.Packet
 			Method?.Invoke(typeof(PacketLogInResult), PacketLogInResult.PacketID, PacketLogInResult.SerializeObject, PacketLogInResult.DeserializeObject);
 			Method?.Invoke(typeof(PacketClientReady), PacketClientReady.PacketID, PacketClientReady.SerializeObject, PacketClientReady.DeserializeObject);
 			Method?.Invoke(typeof(PacketPlayerList), PacketPlayerList.PacketID, PacketPlayerList.SerializeObject, PacketPlayerList.DeserializeObject);
+			Method?.Invoke(typeof(PacketPlayerEnter), PacketPlayerEnter.PacketID, PacketPlayerEnter.SerializeObject, PacketPlayerEnter.DeserializeObject);
 			Method?.Invoke(typeof(PacketPlayerMove), PacketPlayerMove.PacketID, PacketPlayerMove.SerializeObject, PacketPlayerMove.DeserializeObject);
 			Method?.Invoke(typeof(PacketOtherPlayerMove), PacketOtherPlayerMove.PacketID, PacketOtherPlayerMove.SerializeObject, PacketOtherPlayerMove.DeserializeObject);
+			Method?.Invoke(typeof(PacketPlayerLeave), PacketPlayerLeave.PacketID, PacketPlayerLeave.SerializeObject, PacketPlayerLeave.DeserializeObject);
 
         }
     }

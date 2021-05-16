@@ -4,7 +4,6 @@ using UnityEngine;
 using Game.Networking;
 using System;
 using UniRx;
-using Common.Code;
 using Common.Packet;
 
 namespace Game.Character.Player
@@ -21,44 +20,37 @@ namespace Game.Character.Player
 
         void Awake()
         {
-            ConnectionClient.OnRecvEvent
-                .Where((Packet) => Packet.Code == EEventCode.PlayerEnter)
-                .Subscribe((Packet) =>
-                {
-                    var Id = Packet.GetParam<int>(0);
-                    SpawnPlayer(Id);
-                }).AddTo(gameObject);
+            ConnectionClient.AddPacketHandler(EPacketID.PlayerEnter, (Obj) =>
+            {
+                var Packet = (PacketPlayerEnter)Obj;
+                SpawnPlayer(Packet.Id);
+                Players[Packet.Id].transform.position = Packet.Position.ToVector3();  // いいのかこれｗ
+            });
 
-            ConnectionClient.OnRecvEvent
-                .Where((Packet) => Packet.Code == EEventCode.PlayerList)
-                .Subscribe((Packet) =>
+            ConnectionClient.AddPacketHandler(EPacketID.PlayerList, (Obj) =>
+            {
+                var Packet = (PacketPlayerList)Obj;
+                foreach (var Data in Packet.List)
                 {
-                    PacketPlayerList List = Packet.GetParam<PacketPlayerList>(0);
-                    foreach (var Data in List.List)
-                    {
-                        SpawnPlayer(Data.Id);
-                        Players[Data.Id].transform.position = Data.Position.ToVector3();  // いいのかこれｗ
-                    }
-                }).AddTo(gameObject);
+                    SpawnPlayer(Data.Id);
+                    Players[Data.Id].transform.position = Data.Position.ToVector3();  // いいのかこれｗ
+                }
+            });
 
-            ConnectionClient.OnRecvEvent
-                .Where((Packet) => Packet.Code == EEventCode.PlayerMove)
-                .Subscribe((Packet) =>
-                {
-                    var Info = Packet.GetParam<PacketOtherPlayerMove>(0);
-                    var Id = Info.Id;
-                    var Pos = Info.Position.ToVector3();
-                    Players[Id].RecvMove(Pos);
-                }).AddTo(gameObject);
+            ConnectionClient.AddPacketHandler(EPacketID.OtherPlayerMove, (Obj) =>
+            {
+                var Packet = (PacketOtherPlayerMove)Obj;
+                var Id = Packet.Id;
+                var Pos = Packet.Position.ToVector3();
+                Players[Id].RecvMove(Pos);
+            });
 
-            ConnectionClient.OnRecvEvent
-                .Where((Packet) => Packet.Code == EEventCode.PlayerLeave)
-                .Subscribe((Packet) =>
-                {
-                    var Id = Packet.GetParam<int>(0);
-                    Destroy(Players[Id].gameObject);
-                    Players.Remove(Id);
-                }).AddTo(gameObject);
+            ConnectionClient.AddPacketHandler(EPacketID.PlayerLeave, (Obj) =>
+            {
+                var Packet = (PacketPlayerLeave)Obj;
+                Destroy(Players[Packet.Id].gameObject);
+                Players.Remove(Packet.Id);
+            });
         }
 
         /// <summary>

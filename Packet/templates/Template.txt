@@ -2,13 +2,15 @@ using Common.Stream;
 
 namespace Common.Packet
 {
-    public class $CLASS_NAME$ : ISerializable
+    public class $CLASS_NAME$ :%BASE_CLASS% ISerializable
 	{
 		$PACKET_ID$
 
 		$ENUMS$
 
 		$MEMBERS$
+
+		$SEND_CODE$
 
 		public $CLASS_NAME$()
 		{
