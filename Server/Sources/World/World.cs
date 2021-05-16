@@ -58,8 +58,7 @@ namespace World
         private void PlayerMoved(GamePeer Peer, Vector3 Position)
         {
             EventPacket Packet = new EventPacket(EEventCode.PlayerMove);
-            Packet.SetParam(0, Peer.PlayerCharacter.Id);
-            Packet.SetParam(1, Position);
+            Packet.SetParam(0, new PacketOtherPlayerMove(Peer.PlayerCharacter.Id, Position.ToVec3()));
             BroadcastEvent(Packet, Peer.ConnectionId);
         }
 

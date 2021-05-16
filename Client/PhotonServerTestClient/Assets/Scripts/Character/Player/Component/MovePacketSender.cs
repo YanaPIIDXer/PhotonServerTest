@@ -37,7 +37,7 @@ namespace Game.Character.Player.Component
                 .Subscribe((Pos) =>
                 {
                     OperationPacket Packet = new OperationPacket(EOperationCode.Move);
-                    Packet.SetParam(0, Pos);
+                    Packet.SetParam(0, new PacketPlayerMove(Pos.ToVec3()));
                     ConnectionClient.Instance.SendRequest(Packet);
                 });
         }

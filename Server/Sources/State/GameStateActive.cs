@@ -28,8 +28,8 @@ namespace State
         /// <param name="Packet">パケット</param>
         private void OnCharacterMove(OperationPacket Packet)
         {
-            var Position = Packet.GetParam<Vector3>(0);
-            Peer.PlayerCharacter.Move(Position);
+            var Info = Packet.GetParam<PacketPlayerMove>(0);
+            Peer.PlayerCharacter.Move(Info.Position.ToVector3());
         }
     }
 }

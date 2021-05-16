@@ -45,8 +45,9 @@ namespace Game.Character.Player
                 .Where((Packet) => Packet.Code == EEventCode.PlayerMove)
                 .Subscribe((Packet) =>
                 {
-                    var Id = Packet.GetParam<int>(0);
-                    var Pos = Packet.GetParam<Vector3>(1);
+                    var Info = Packet.GetParam<PacketOtherPlayerMove>(0);
+                    var Id = Info.Id;
+                    var Pos = Info.Position.ToVector3();
                     Players[Id].RecvMove(Pos);
                 }).AddTo(gameObject);
 
