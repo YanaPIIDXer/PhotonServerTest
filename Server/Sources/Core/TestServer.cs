@@ -32,5 +32,6 @@ public class TestServer : ApplicationBase
     private void RegisterCustomClasses()
     {
         Protocol.TryRegisterCustomType(typeof(Vector3), 1, SerializeMethods.SerializeVector3, SerializeMethods.DeserializeVector3);
+        Protocol.TryRegisterCustomType(typeof(PlayerList), 2, SerializeMethods.SerializePlayerList, SerializeMethods.DeserializePlayerList);
     }
 }

@@ -25,17 +25,22 @@ namespace Game.Character.Player
                 .Subscribe((Packet) =>
                 {
                     var Id = Packet.GetParam<int>(0);
+                    SpawnPlayer(Id);
+                });
 
-                    // HACK:GameSequence.csからのコピペ
-                    //      Prefabを管理するクラスを作りたい
-                    var PlayerPrefab = Resources.Load<GameObject>("Prefabs/System/Player");
-                    Debug.Assert(PlayerPrefab != null, "Player Prefab Load Failed.");
-
-                    var PlayerObj = Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity);
-                    Debug.Assert(PlayerObj != null, "Player Instantiate Failed.");
-
-                    var Player = PlayerObj.GetComponent<Player>();
-                    Players.Add(Id, Player);
+            ConnectionClient.OnRecvEvent
+                .Where((Packet) => Packet.Code == EEventCode.PlayerList)
+                .Subscribe((Packet) =>
+                {
+                    /*
+                    Dictionary<int, Vector3> PlayerDic = Packet.GetParam<Dictionary<int, Vector3>>(0);
+                    foreach (var KeyValue in PlayerDic)
+                    {
+                        SpawnPlayer(KeyValue.Key);
+                        Players[KeyValue.Key].transform.position = KeyValue.Value;  // いいのかこれｗ
+                        Debug.Log(KeyValue.ToString());
+                    }
+                    */
                 });
 
             ConnectionClient.OnRecvEvent
@@ -46,6 +51,24 @@ namespace Game.Character.Player
                     Destroy(Players[Id].gameObject);
                     Players.Remove(Id);
                 });
+        }
+
+        /// <summary>
+        /// プレイヤー生成
+        /// </summary>
+        /// <param name="Id">ID</param>
+        private void SpawnPlayer(int Id)
+        {
+            // HACK:GameSequence.csからのコピペ
+            //      Prefabを管理するクラスを作りたい
+            var PlayerPrefab = Resources.Load<GameObject>("Prefabs/System/Player");
+            Debug.Assert(PlayerPrefab != null, "Player Prefab Load Failed.");
+
+            var PlayerObj = Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity);
+            Debug.Assert(PlayerObj != null, "Player Instantiate Failed.");
+
+            var Player = PlayerObj.GetComponent<Player>();
+            Players.Add(Id, Player);
         }
     }
 }

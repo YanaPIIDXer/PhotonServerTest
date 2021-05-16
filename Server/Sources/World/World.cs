@@ -33,6 +33,7 @@ namespace World
             EnterPacket.SetParam(0, Peer.PlayerCharacter.Id);
             BroadcastEvent(EnterPacket);
 
+            /*
             Dictionary<int, Vector3> PlayerListDic = new Dictionary<int, Vector3>();
             foreach (var Other in Peers)
             {
@@ -41,6 +42,7 @@ namespace World
             EventPacket ListPacket = new EventPacket(EEventCode.PlayerList);
             ListPacket.SetParam(0, PlayerListDic);
             Peer.SendEventPacket(ListPacket);
+            */
 
             Peers.Add(Peer);
 
