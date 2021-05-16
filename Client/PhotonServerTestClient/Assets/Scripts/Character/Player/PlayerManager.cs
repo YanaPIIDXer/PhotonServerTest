@@ -37,7 +37,7 @@ namespace Game.Character.Player
                     foreach (var Data in List.List)
                     {
                         SpawnPlayer(Data.Id);
-                        Players[Data.Id].transform.position = new Vector3(Data.Position.X, Data.Position.Y, Data.Position.Z);  // いいのかこれｗ
+                        Players[Data.Id].transform.position = Data.Position.ToVector3();  // いいのかこれｗ
                     }
                 }).AddTo(gameObject);
 

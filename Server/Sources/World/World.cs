@@ -36,7 +36,7 @@ namespace World
             PacketPlayerList List = new PacketPlayerList();
             foreach (var Other in Peers)
             {
-                var Pos = new Vec3(Other.PlayerCharacter.Position.x, Other.PlayerCharacter.Position.y, Other.PlayerCharacter.Position.z);
+                var Pos = Other.PlayerCharacter.Position.ToVec3();
                 var Data = new CharacterData(Other.PlayerCharacter.Id, Pos);
                 List.List.Add(Data);
             }
