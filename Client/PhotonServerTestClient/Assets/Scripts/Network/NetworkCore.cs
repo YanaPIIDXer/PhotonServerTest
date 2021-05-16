@@ -128,12 +128,47 @@ namespace Game.Network
             Peer.OpCustom(ByteCode, Params, false);
         }
 
+        /// <summary>
+        /// リクエスト送信
+        /// </summary>
+        /// <param name="Code">オペレーションコード</param>
+        /// <param name="Params">パラメータ</param>
+        /// <param name="ResponseHandler">リクエストに対応するレスポンスのハンドラ</param>
+        public void SendRequest(EOperationCode Code, Action<PacketParam> ResponseHandler)
+        {
+            SendRequest(Code, new PacketParam(), ResponseHandler);
+        }
+
         public void OnOperationResponse(OperationResponse operationResponse)
         {
             byte Code = operationResponse.OperationCode;
             if (!ResponseHandlers.ContainsKey(Code)) { throw new Exception(string.Format("{0} に対応するハンドラがない", ((EOperationCode)Code).ToString())); }
             ResponseHandlers[Code]?.Invoke(operationResponse.Parameters);
             ResponseHandlers.Remove(Code);
+        }
+
+        /// <summary>
+        /// レスポンスの伴わないパケットを送信
+        /// </summary>
+        /// <param name="Code">オペレーションコード</param>
+        /// <param name="Params">パラメータ</param>
+        public void SendReport(EOperationCode Code, PacketParam Params)
+        {
+            if (Peer == null)
+            {
+                Debug.LogError("Peer is null.");
+                return;
+            }
+            Peer.OpCustom((byte)Code, Params, false);
+        }
+
+        /// <summary>
+        /// レスポンスの伴わないパケットを送信
+        /// </summary>
+        /// <param name="Code">オペレーションコード</param>
+        public void SendReport(EOperationCode Code)
+        {
+            SendReport(Code, new PacketParam());
         }
 
         public void OnEvent(EventData eventData)
