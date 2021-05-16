@@ -64,6 +64,11 @@ namespace Game.Network
         private Dictionary<byte, Subject<PacketParam>> EventDic = new Dictionary<byte, Subject<PacketParam>>();
 
         /// <summary>
+        /// レスポンスのハンドラを保持するDictionary
+        /// </summary>
+        private Dictionary<byte, Action<PacketParam>> ResponseHandlers = new Dictionary<byte, Action<PacketParam>>();
+
+        /// <summary>
         /// イベントに対応したObservable
         /// </summary>
         /// <param name="Code">イベントコード</param>
@@ -105,8 +110,30 @@ namespace Game.Network
             }
         }
 
+        /// <summary>
+        /// リクエスト送信
+        /// </summary>
+        /// <param name="Code">オペレーションコード</param>
+        /// <param name="Params">パラメータ</param>
+        /// <param name="ResponseHandler">リクエストに対応するレスポンスのハンドラ</param>
+        public void SendRequest(EOperationCode Code, PacketParam Params, Action<PacketParam> ResponseHandler)
+        {
+            if (Peer == null)
+            {
+                Debug.LogError("Peer is null.");
+                return;
+            }
+            byte ByteCode = (byte)Code;
+            ResponseHandlers.Add(ByteCode, ResponseHandler);
+            Peer.OpCustom(ByteCode, Params, false);
+        }
+
         public void OnOperationResponse(OperationResponse operationResponse)
         {
+            byte Code = operationResponse.OperationCode;
+            if (!ResponseHandlers.ContainsKey(Code)) { throw new Exception(string.Format("{0} に対応するハンドラがない", ((EOperationCode)Code).ToString())); }
+            ResponseHandlers[Code]?.Invoke(operationResponse.Parameters);
+            ResponseHandlers.Remove(Code);
         }
 
         public void OnEvent(EventData eventData)
