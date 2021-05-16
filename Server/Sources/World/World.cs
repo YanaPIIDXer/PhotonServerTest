@@ -35,7 +35,7 @@ namespace World
                 EventPacket Packet = new EventPacket(EEventCode.PlayerMove);
                 Packet.SetParam(0, Peer.PlayerCharacter.Id);
                 Packet.SetParam(1, Pos);
-                BroadcastEvent(Packet);     // 本当は移動した本人は無視する必要があるんだけど、テスト用
+                BroadcastEvent(Packet, Peer.ConnectionId);
             });
         }
 
