@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace NativePacketGenerator
 {
-
     /// <summary>
     /// クラスメンバ情報.
     /// </summary>

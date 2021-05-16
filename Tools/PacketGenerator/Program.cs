@@ -48,6 +48,13 @@ namespace NativePacketGenerator
                     return;
                 }
             }
+
+            RegisterGenerator RegisterGen = new RegisterGenerator(Classes);
+            if (!RegisterGen.Generate())
+            {
+                Console.WriteLine("カスタムクラスレジスタのソースコード生成に失敗しました。");
+                return;
+            }
         }
     }
 }

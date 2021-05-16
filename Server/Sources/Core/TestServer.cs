@@ -19,20 +19,10 @@ public class TestServer : ApplicationBase
 
     protected override void Setup()
     {
-        RegisterCustomClasses();
+        RegisterPacketType.RegisterPackets(Protocol.TryRegisterCustomType);
     }
 
     protected override void TearDown()
     {
-    }
-
-    /// <summary>
-    /// カスタムクラスの登録
-    /// </summary>
-    private void RegisterCustomClasses()
-    {
-        Protocol.TryRegisterCustomType(typeof(PacketPlayerList), PacketPlayerList.PacketID, PacketPlayerList.SerializeObject, PacketPlayerList.DeserializeObject);
-        Protocol.TryRegisterCustomType(typeof(PacketPlayerMove), PacketPlayerMove.PacketID, PacketPlayerMove.SerializeObject, PacketPlayerMove.DeserializeObject);
-        Protocol.TryRegisterCustomType(typeof(PacketOtherPlayerMove), PacketOtherPlayerMove.PacketID, PacketOtherPlayerMove.SerializeObject, PacketOtherPlayerMove.DeserializeObject);
     }
 }

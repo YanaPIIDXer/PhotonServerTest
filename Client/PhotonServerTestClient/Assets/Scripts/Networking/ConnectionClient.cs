@@ -58,7 +58,10 @@ namespace Game.Networking
         {
             GameObject.DontDestroyOnLoad(gameObject);
             _Instance = this;
-            RegisterCustomClasses();
+            RegisterPacketType.RegisterPackets((customType, code, serializeMethod, deserializeMethod) =>
+            {
+                return PhotonPeer.RegisterType(customType, code, serializeMethod.Invoke, deserializeMethod.Invoke);
+            });
         }
 
         void Update()
@@ -131,16 +134,6 @@ namespace Game.Networking
                     break;
             }
             ConnectionStatus.Value = statusCode;
-        }
-
-        /// <summary>
-        /// カスタムクラスの登録
-        /// </summary>
-        private void RegisterCustomClasses()
-        {
-            PhotonPeer.RegisterType(typeof(PacketPlayerList), PacketPlayerList.PacketID, PacketPlayerList.SerializeObject, PacketPlayerList.DeserializeObject);
-            PhotonPeer.RegisterType(typeof(PacketPlayerMove), PacketPlayerMove.PacketID, PacketPlayerMove.SerializeObject, PacketPlayerMove.DeserializeObject);
-            PhotonPeer.RegisterType(typeof(PacketOtherPlayerMove), PacketOtherPlayerMove.PacketID, PacketOtherPlayerMove.SerializeObject, PacketOtherPlayerMove.DeserializeObject);
         }
     }
 }
