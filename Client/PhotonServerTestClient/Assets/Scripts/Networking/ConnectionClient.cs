@@ -89,7 +89,10 @@ namespace Game.Networking
         /// <param name="Packet">パケット</param>
         public void SendRequest(OperationPacket Packet)
         {
-            Peer.OpCustom(Packet.SendCode, Packet.SendParamsDictionary, false);
+            if (!Peer.OpCustom(Packet.SendCode, Packet.SendParamsDictionary, false))
+            {
+                DebugReturn(DebugLevel.ERROR, string.Format("SendRequest Failed. Code:{0}", Packet.Code.ToString()));
+            }
         }
 
         public void DebugReturn(DebugLevel level, string message)

@@ -1,5 +1,3 @@
-using System;
-using System.Reactive.Subjects;
 using UnityEngine;
 
 namespace Character.Player
@@ -7,7 +5,7 @@ namespace Character.Player
     /// <summary>
     /// プレイヤー
     /// </summary>
-    public class Player : Character
+    public partial class Player : Character
     {
         /// <summary>
         /// 所有者
@@ -35,6 +33,7 @@ namespace Character.Player
         public void Move(Vector3 ToPosition)
         {
             Position = ToPosition;
+            OnMovedSubject.OnNext(Position);
         }
     }
 }
