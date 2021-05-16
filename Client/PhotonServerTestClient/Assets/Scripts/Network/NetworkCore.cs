@@ -1,0 +1,86 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using ExitGames.Client.Photon;
+
+namespace Game.Network
+{
+    /// <summary>
+    /// ネットワークコア
+    /// </summary>
+    public class NetworkCore : MonoBehaviour
+    {
+        /// <summary>
+        /// Prefabのパス
+        /// </summary>
+        private static readonly string PrefabPath = "Prefabs/System/NetworkCore";
+
+        /// <summary>
+        /// インスタンス
+        /// </summary>
+        public static NetworkCore Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                {
+                    var Prefab = Resources.Load<GameObject>(PrefabPath);
+                    Debug.Assert(Prefab != null, "NetworkCore Prefab Load Failed.");
+
+                    var Obj = Instantiate<GameObject>(Prefab);
+                    Debug.Assert(Obj != null, "NetworkCore Instantiate Failed.");
+
+                    _Instance = Obj.GetComponent<NetworkCore>();
+                }
+                return _Instance;
+            }
+        }
+
+        private static NetworkCore _Instance = null;
+
+        /// <summary>
+        /// Peer
+        /// </summary>
+        private PhotonPeer Peer = null;
+
+        void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
+        void Update()
+        {
+            if (Peer != null)
+            {
+                Peer.Service();
+            }
+        }
+
+        /// <summary>
+        /// 接続
+        /// </summary>
+        /// <returns>成功したらtrue</returns>
+        public bool Connect()
+        {
+            if (Peer != null)
+            {
+                Disconnect();
+            }
+
+            Peer = new PhotonPeer(ConnectionProtocol.Tcp);
+            return Peer.Connect("127.0.0.1:4580", "TestServer");
+        }
+
+        /// <summary>
+        /// 切断
+        /// </summary>
+        public void Disconnect()
+        {
+            if (Peer != null)
+            {
+                Peer.Disconnect();
+                Peer = null;
+            }
+        }
+    }
+}
