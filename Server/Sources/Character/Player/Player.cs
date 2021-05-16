@@ -15,6 +15,11 @@ namespace Character.Player
         private GamePeer Peer = null;
 
         /// <summary>
+        /// ID
+        /// </summary>
+        public override int Id => Peer.ConnectionId;
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="Peer">所有者</param>
