@@ -6,6 +6,7 @@ namespace Common.Code
     public enum EEventCode : byte
     {
         PlayerEnter = 1,
+        PlayerList,
         PlayerMove,
         PlayerLeave,
     }

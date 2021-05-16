@@ -29,9 +29,18 @@ namespace World
         /// <param name="Peer">Peer</param>
         public void AddPeer(GamePeer Peer)
         {
-            EventPacket Packet = new EventPacket(EEventCode.PlayerEnter);
-            Packet.SetParam(0, Peer.PlayerCharacter.Id);
-            BroadcastEvent(Packet);
+            EventPacket EnterPacket = new EventPacket(EEventCode.PlayerEnter);
+            EnterPacket.SetParam(0, Peer.PlayerCharacter.Id);
+            BroadcastEvent(EnterPacket);
+
+            Dictionary<int, Vector3> PlayerListDic = new Dictionary<int, Vector3>();
+            foreach (var Other in Peers)
+            {
+                PlayerListDic.Add(Other.PlayerCharacter.Id, Other.PlayerCharacter.Position);
+            }
+            EventPacket ListPacket = new EventPacket(EEventCode.PlayerList);
+            ListPacket.SetParam(0, PlayerListDic);
+            Peer.SendEventPacket(ListPacket);
 
             Peers.Add(Peer);
 
