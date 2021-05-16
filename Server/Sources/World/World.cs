@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using Common.Packet;
 using Common.Code;
+using UnityEngine;
 
 namespace World
 {
@@ -28,15 +29,40 @@ namespace World
         /// <param name="Peer">Peer</param>
         public void AddPeer(GamePeer Peer)
         {
+            EventPacket Packet = new EventPacket(EEventCode.PlayerEnter);
+            Packet.SetParam(0, Peer.PlayerCharacter.Id);
+            BroadcastEvent(Packet);
+
             Peers.Add(Peer);
-            Peer.OnDisconnected.Subscribe((_) => Peers.Remove(Peer));
-            Peer.PlayerCharacter.OnMoved.Subscribe((Pos) =>
-            {
-                EventPacket Packet = new EventPacket(EEventCode.PlayerMove);
-                Packet.SetParam(0, Peer.PlayerCharacter.Id);
-                Packet.SetParam(1, Pos);
-                BroadcastEvent(Packet, Peer.ConnectionId);
-            });
+
+            Peer.OnDisconnected.Subscribe((_) => PlayerLeave(Peer));
+            Peer.PlayerCharacter.OnMoved.Subscribe((Pos) => PlayerMoved(Peer, Pos));
+        }
+
+        /// <summary>
+        /// プレイヤーが移動した
+        /// </summary>
+        /// <param name="Peer">Peer</param>
+        /// <param name="Position">座標</param>
+        private void PlayerMoved(GamePeer Peer, Vector3 Position)
+        {
+            EventPacket Packet = new EventPacket(EEventCode.PlayerMove);
+            Packet.SetParam(0, Peer.PlayerCharacter.Id);
+            Packet.SetParam(1, Position);
+            BroadcastEvent(Packet, Peer.ConnectionId);
+        }
+
+        /// <summary>
+        /// プレイヤーが退場した
+        /// </summary>
+        /// <param name="Peer">Peer</param>
+        private void PlayerLeave(GamePeer Peer)
+        {
+            var Id = Peer.PlayerCharacter.Id;
+            Peers.Remove(Peer);
+            EventPacket Packet = new EventPacket(EEventCode.PlayerLeave);
+            Packet.SetParam(0, Id);
+            BroadcastEvent(Packet);
         }
 
         /// <summary>
