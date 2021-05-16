@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Common.Stream
 {
     /// <summary>
-    /// メモリストリームインタフェース
+    /// ストリームインタフェース
     /// </summary>
-    public interface IMemoryStream
+    public interface IStream
     {
         /// <summary>
         /// シリアライズ
@@ -82,4 +76,14 @@ namespace Common.Stream
         /// <returns>成功したらtrueを返す</returns>
         bool Serialize(ISerializable Data);
     }
+
+    /// <summary>
+    /// メモリストリームインタフェース
+    /// </summary>
+    public interface IMemoryStream : IStream { }
+
+    /// <summary>
+    /// Dictionaryストリームインタフェース
+    /// </summary>
+    public interface IDictioanryStream : IStream { }
 }
