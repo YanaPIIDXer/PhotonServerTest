@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ExitGames.Client.Photon;
+using UniRx;
+using System;
 
 namespace Game.Network
 {
@@ -42,6 +44,16 @@ namespace Game.Network
         /// Peer
         /// </summary>
         private PhotonPeer Peer = null;
+
+        /// <summary>
+        /// 接続状態が変わった時のSubject
+        /// </summary>
+        private Subject<StatusCode> OnNetworkStatusChangedSubject = new Subject<StatusCode>();
+
+        /// <summary>
+        /// 通信状態が変わった
+        /// </summary>
+        public IObservable<StatusCode> OnNetworkStatusChanged { get { return OnNetworkStatusChangedSubject; } }
 
         void Awake()
         {
@@ -101,6 +113,7 @@ namespace Game.Network
 
         public void OnStatusChanged(StatusCode statusCode)
         {
+            OnNetworkStatusChangedSubject.OnNext(statusCode);
         }
 
         public void OnEvent(EventData eventData)
