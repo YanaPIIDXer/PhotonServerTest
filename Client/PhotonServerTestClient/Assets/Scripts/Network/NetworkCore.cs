@@ -8,7 +8,7 @@ namespace Game.Network
     /// <summary>
     /// ネットワークコア
     /// </summary>
-    public class NetworkCore : MonoBehaviour
+    public class NetworkCore : MonoBehaviour, IPhotonPeerListener
     {
         /// <summary>
         /// Prefabのパス
@@ -67,7 +67,7 @@ namespace Game.Network
                 Disconnect();
             }
 
-            Peer = new PhotonPeer(ConnectionProtocol.Tcp);
+            Peer = new PhotonPeer(this, ConnectionProtocol.Tcp);
             return Peer.Connect("127.0.0.1:4580", "TestServer");
         }
 
@@ -81,6 +81,30 @@ namespace Game.Network
                 Peer.Disconnect();
                 Peer = null;
             }
+        }
+
+        public void DebugReturn(DebugLevel level, string message)
+        {
+            if (level != DebugLevel.ERROR)
+            {
+                Debug.Log("[" + level.ToString() + "]:" + message);
+            }
+            else
+            {
+                Debug.LogError("[" + level.ToString() + "]:" + message);
+            }
+        }
+
+        public void OnOperationResponse(OperationResponse operationResponse)
+        {
+        }
+
+        public void OnStatusChanged(StatusCode statusCode)
+        {
+        }
+
+        public void OnEvent(EventData eventData)
+        {
         }
     }
 }
