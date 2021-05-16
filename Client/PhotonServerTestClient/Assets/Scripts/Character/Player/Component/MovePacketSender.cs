@@ -38,6 +38,7 @@ namespace Game.Character.Player.Component
                 {
                     OperationPacket Packet = new OperationPacket(EOperationCode.Move);
                     Packet.SetParam(0, Pos);
+                    ConnectionClient.Instance.SendRequest(Packet);
                 });
         }
 
