@@ -4,9 +4,12 @@ using UnityEngine;
 using ExitGames.Client.Photon;
 using UniRx;
 using System;
+using Common.Code;
 
 namespace Game.Network
 {
+    using PacketParam = Dictionary<byte, object>;
+
     /// <summary>
     /// ネットワークコア
     /// </summary>
@@ -55,17 +58,24 @@ namespace Game.Network
         /// </summary>
         public IObservable<StatusCode> OnNetworkStatusChanged { get { return OnNetworkStatusChangedSubject; } }
 
-        void Awake()
-        {
-            DontDestroyOnLoad(gameObject);
-        }
+        /// <summary>
+        /// イベントに対応したSubjectを保持するDictionary
+        /// </summary>
+        private Dictionary<byte, Subject<PacketParam>> EventDic = new Dictionary<byte, Subject<PacketParam>>();
 
-        void Update()
+        /// <summary>
+        /// イベントに対応したObservable
+        /// </summary>
+        /// <param name="Code">イベントコード</param>
+        /// <returns>Observable</returns>
+        public IObservable<PacketParam> OnEventObservable(EEventCode Code)
         {
-            if (Peer != null)
+            byte ByteCode = (byte)Code;
+            if (!EventDic.ContainsKey(ByteCode))
             {
-                Peer.Service();
+                EventDic[ByteCode] = new Subject<PacketParam>();
             }
+            return EventDic[ByteCode];
         }
 
         /// <summary>
@@ -95,6 +105,17 @@ namespace Game.Network
             }
         }
 
+        public void OnOperationResponse(OperationResponse operationResponse)
+        {
+        }
+
+        public void OnEvent(EventData eventData)
+        {
+            byte Code = eventData.Code;
+            if (!EventDic.ContainsKey(Code)) { return; }        // イベント購読者がいない
+            EventDic[Code].OnNext(eventData.Parameters);
+        }
+
         public void DebugReturn(DebugLevel level, string message)
         {
             if (level != DebugLevel.ERROR)
@@ -107,17 +128,23 @@ namespace Game.Network
             }
         }
 
-        public void OnOperationResponse(OperationResponse operationResponse)
-        {
-        }
-
         public void OnStatusChanged(StatusCode statusCode)
         {
             OnNetworkStatusChangedSubject.OnNext(statusCode);
         }
 
-        public void OnEvent(EventData eventData)
+        void Awake()
         {
+            DontDestroyOnLoad(gameObject);
         }
+
+        void Update()
+        {
+            if (Peer != null)
+            {
+                Peer.Service();
+            }
+        }
+
     }
 }
