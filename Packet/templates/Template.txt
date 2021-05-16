@@ -1,0 +1,23 @@
+using Common.Stream;
+
+namespace Common.Packet
+{
+    public class $CLASS_NAME$ : ISerializable
+	{
+		$ENUMS$
+
+		$MEMBERS$
+
+		public $CLASS_NAME$()
+		{
+		}
+
+		$CONSTRUCTOR$
+
+		public bool Serialize(IMemoryStream Stream)
+		{
+			$SERIALIZE_MEMBERS$
+			return true;
+		}
+	}
+}
