@@ -37,4 +37,5 @@ Eventはサーバ主体の通信で、Operationはクライアント主体の通
  
  ### サーバ
 
-Peerが保持するGameStateのオブジェクトがオペレーションコードに対応したActionを保持する形で対応。  
+Peerが保持するGameStateのオブジェクトがオペレーションコードに対応したFuncを保持する形で対応。  
+FuncはResponseのパラメータを返す。（Reportだった場合はnullを返す）  
