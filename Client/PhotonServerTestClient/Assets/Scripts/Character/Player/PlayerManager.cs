@@ -5,6 +5,7 @@ using Game.Networking;
 using System;
 using UniRx;
 using Common.Code;
+using Common.Packet;
 
 namespace Game.Character.Player
 {
@@ -32,15 +33,13 @@ namespace Game.Character.Player
                 .Where((Packet) => Packet.Code == EEventCode.PlayerList)
                 .Subscribe((Packet) =>
                 {
-                    /*
-                    Dictionary<int, Vector3> PlayerDic = Packet.GetParam<Dictionary<int, Vector3>>(0);
-                    foreach (var KeyValue in PlayerDic)
+                    PlayerList List = Packet.GetParam<PlayerList>(0);
+                    foreach (var KeyValue in List.Dic)
                     {
                         SpawnPlayer(KeyValue.Key);
                         Players[KeyValue.Key].transform.position = KeyValue.Value;  // いいのかこれｗ
                         Debug.Log(KeyValue.ToString());
                     }
-                    */
                 });
 
             ConnectionClient.OnRecvEvent
