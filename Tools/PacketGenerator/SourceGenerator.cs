@@ -154,21 +154,13 @@ namespace NativePacketGenerator
             for (int i = 0; i < Class.Members.Count; i++)
             {
                 var MemberData = Class.Members[i];
-                Members += "/// <summary>\n\t\t///  " + MemberData.Comment + "\n\t\t///\n\t\t";
-                Members += "public " + MemberData.TypeName + " " + MemberData.Name + ";\n\t";
+                Members += "/// <summary>\n\t\t///  " + MemberData.Comment + "\n\t\t/// </summary>\n\t\t";
+                Members += "public " + MemberData.TypeName + " " + MemberData.Name + ";\n\n\t\t";
             }
             Template = Template.Replace("$MEMBERS$", Members);
 
             // コンストラクタのメンバ
             string ConstructorMembers = "";
-            if (Class.IsProcessPacket)
-            {
-                ConstructorMembers += "u32 InClientId";
-                if (Class.Members.Count > 0)
-                {
-                    ConstructorMembers += ", ";
-                }
-            }
             if (Class.Members.Count > 0)
             {
                 for (int i = 0; i < Class.Members.Count - 1; i++)
@@ -188,25 +180,25 @@ namespace NativePacketGenerator
             }
             for (int i = 0; i < Class.Members.Count; i++)
             {
-                PutMembers += "this." + Class.Members[i].Name + " = " + Class.Members[i].Name + ";\n\t\t";
+                PutMembers += "this." + Class.Members[i].Name + " = " + Class.Members[i].Name + ";\n\t\t\t";
             }
             Template = Template.Replace("$PUT_MEMBERS$", PutMembers);
 
             string SerializeFunctions = "";
             if (Class.IsProcessPacket)
             {
-                SerializeFunctions += "ProcessPacketBase::Serialize(pStream);\n\t\t";
+                SerializeFunctions += "ProcessPacketBase::Serialize(pStream);\n\t\t\t";
             }
             for (int i = 0; i < Class.Members.Count; i++)
             {
                 var Member = Class.Members[i];
                 if (Member.IsPrimitive)
                 {
-                    SerializeFunctions += "Stream.Serialize(ref " + Member.Name + ");\n\t\t";
+                    SerializeFunctions += "Stream.Serialize(ref " + Member.Name + ");\n\t\t\t";
                 }
                 else
                 {
-                    SerializeFunctions += Member.Name + ".Serialize(Stream);\n\t\t";
+                    SerializeFunctions += Member.Name + ".Serialize(Stream);\n\t\t\t";
                 }
             }
             Template = Template.Replace("$SERIALIZE_MEMBERS$", SerializeFunctions);
