@@ -1,5 +1,7 @@
 using Photon.SocketServer;
 using System;
+using UnityEngine;
+using Common.Packet;
 
 public class TestServer : ApplicationBase
 {
@@ -17,9 +19,18 @@ public class TestServer : ApplicationBase
 
     protected override void Setup()
     {
+        RegisterCustomClasses();
     }
 
     protected override void TearDown()
     {
+    }
+
+    /// <summary>
+    /// カスタムクラスの登録
+    /// </summary>
+    private void RegisterCustomClasses()
+    {
+        Protocol.TryRegisterCustomType(typeof(Vector3), 1, SerializeMethods.SerializeVector3, SerializeMethods.DeserializeVector3);
     }
 }

@@ -58,6 +58,7 @@ namespace Game.Networking
         {
             GameObject.DontDestroyOnLoad(gameObject);
             _Instance = this;
+            RegisterCustomClasses();
         }
 
         void Update()
@@ -130,6 +131,14 @@ namespace Game.Networking
                     break;
             }
             ConnectionStatus.Value = statusCode;
+        }
+
+        /// <summary>
+        /// カスタムクラスの登録
+        /// </summary>
+        private void RegisterCustomClasses()
+        {
+            PhotonPeer.RegisterType(typeof(Vector3), 1, SerializeMethods.SerializeVector3, SerializeMethods.DeserializeVector3);
         }
     }
 }
