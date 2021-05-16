@@ -7,8 +7,8 @@
     <ProjectGuid>{C537CAB7-72B1-4B7B-81B8-5D3F916F0CAB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NativePacketGenerator</RootNamespace>
-    <AssemblyName>NativePacketGenerator</AssemblyName>
+    <RootNamespace>PacketGenerator</RootNamespace>
+    <AssemblyName>PacketGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
