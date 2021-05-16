@@ -1,7 +1,0 @@
-namespace Common.Packet
-{
-    public enum EPacketID
-    {
-    	$PACKET_ID_LIST$
-	}
-}

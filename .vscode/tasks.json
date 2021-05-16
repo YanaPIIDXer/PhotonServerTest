@@ -4,13 +4,6 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "generate-packet",
-            "command": "./GenPacket.bat",
-            "type": "shell",
-            "group": "none",
-            "problemMatcher": "$msCompile"
-        },
-        {
             "label": "build-common",
             "command": "dotnet",
             "type": "shell",
