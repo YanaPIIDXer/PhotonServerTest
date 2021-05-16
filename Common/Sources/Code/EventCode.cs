@@ -5,6 +5,6 @@ namespace Common.Code
     /// </summary>
     public enum EEventCode : byte
     {
-        PlayerMove,
+        PlayerMove = 1,
     }
 }
