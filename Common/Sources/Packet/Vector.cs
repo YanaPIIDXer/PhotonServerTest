@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Common.Packet
 {
@@ -34,6 +35,17 @@ namespace Common.Packet
             this.X = X;
             this.Y = Y;
             this.Z = Z;
+        }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="Src">Unityのベクトルクラス</param>
+        public Vec3(Vector3 Src)
+        {
+            this.X = Src.x;
+            this.Y = Src.y;
+            this.Z = Src.z;
         }
     }
 }
