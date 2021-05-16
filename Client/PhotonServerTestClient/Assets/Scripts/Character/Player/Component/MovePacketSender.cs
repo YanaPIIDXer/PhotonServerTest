@@ -61,8 +61,8 @@ namespace Game.Character.Player.Component
             // その為、各要素の小数点第二位以下を切り捨てて扱うものとする。
             var Pos = Trans.position;
             Pos.x = Mathf.Floor(Pos.x * 10) * 0.1f;
-            Pos.y = Mathf.Floor(Pos.y) * 0.1f;
-            Pos.z = Mathf.Floor(Pos.z * 10) / 0.1f;
+            Pos.y = Mathf.Floor(Pos.y * 10) * 0.1f;
+            Pos.z = Mathf.Floor(Pos.z * 10) * 0.1f;
             PrevPosition.Value = Pos;
         }
     }
