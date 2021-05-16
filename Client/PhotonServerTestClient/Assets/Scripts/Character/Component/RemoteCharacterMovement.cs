@@ -56,8 +56,6 @@ namespace Game.Character.Component
         /// <param name="Position">座標</param>
         public void SetMove(Vector3 Position)
         {
-            Trans.position = Destination;
-            return;
             PrevPosition = Trans.position;
             Destination = Position;
             LastTime = MoveTime;
