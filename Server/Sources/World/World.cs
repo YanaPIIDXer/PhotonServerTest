@@ -36,7 +36,12 @@ namespace World
             PlayerList List = new PlayerList();
             foreach (var Other in Peers)
             {
-                List.Add(Other.PlayerCharacter.Id, Other.PlayerCharacter.Position);
+                var Data = new PlayerData();
+                Data.Id = Other.PlayerCharacter.Id;
+                Data.X = Other.PlayerCharacter.Position.x;
+                Data.Y = Other.PlayerCharacter.Position.y;
+                Data.Z = Other.PlayerCharacter.Position.z;
+                List.List.Add(Data);
             }
             EventPacket ListPacket = new EventPacket(EEventCode.PlayerList);
             ListPacket.SetParam(0, List);

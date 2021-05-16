@@ -66,11 +66,7 @@ namespace Game.Character.Component
         /// </summary>
         public override void OnUpdate()
         {
-            if (LastTime <= 0.0f)
-            {
-                Trans.position = Destination;
-                return;
-            }
+            if (LastTime <= 0.0f) { return; }
 
             LastTime = Mathf.Max(LastTime - Time.deltaTime, 0.0f);
             var Current = Vector3.Lerp(PrevPosition, Destination, 1.0f - (LastTime / MoveTime));

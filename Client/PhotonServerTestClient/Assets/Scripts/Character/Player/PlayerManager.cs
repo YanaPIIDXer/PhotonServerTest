@@ -34,10 +34,10 @@ namespace Game.Character.Player
                 .Subscribe((Packet) =>
                 {
                     PlayerList List = Packet.GetParam<PlayerList>(0);
-                    foreach (var KeyValue in List.Dic)
+                    foreach (var Data in List.List)
                     {
-                        SpawnPlayer(KeyValue.Key);
-                        Players[KeyValue.Key].transform.position = KeyValue.Value;  // いいのかこれｗ
+                        SpawnPlayer(Data.Id);
+                        Players[Data.Id].transform.position = new Vector3(Data.X, Data.Y, Data.Z);  // いいのかこれｗ
                     }
                 }).AddTo(gameObject);
 
