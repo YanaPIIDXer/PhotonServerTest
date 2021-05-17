@@ -9,6 +9,7 @@ namespace Game.UI
     /// </summary>
     public enum EZOrder
     {
-        Dialog = 100,
+        Overlay = 900,
+        Dialog = 1000,
     }
 }
