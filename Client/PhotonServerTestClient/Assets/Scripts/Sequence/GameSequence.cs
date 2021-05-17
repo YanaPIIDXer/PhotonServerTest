@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game.Network;
 using Common.Packet;
+using Game.Character.Player;
 
 namespace Game.Sequence
 {
@@ -17,9 +18,10 @@ namespace Game.Sequence
             {
                 var Response = new PacketServerReady();
                 Response.Serialize(Stream);
-                var Id = Response.CharacterId;
+                //var Id = Response.CharacterId;
+                // TODO;PlayerManagerクラスを定義してそこに投げる
                 var Pos = Response.Position.ToVector3();
-                Debug.Log("Id:" + Id + " Position:" + Pos.ToString());
+                Player.Spawn(Pos);
             });
         }
     }
