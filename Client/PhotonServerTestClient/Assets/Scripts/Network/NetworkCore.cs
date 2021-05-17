@@ -4,7 +4,6 @@ using UnityEngine;
 using ExitGames.Client.Photon;
 using UniRx;
 using System;
-using Common.Code;
 using Common.Packet;
 using Common.Stream;
 
@@ -71,11 +70,11 @@ namespace Game.Network
         /// <summary>
         /// イベントのハンドラを追加
         /// </summary>
-        /// <param name="Code">イベントコード</param>
+        /// <param name="PacketID">パケットＩＤ</param>
         /// <param name="Handler">ハンドラ</param>
-        public void AddEventHandler(EEventCode Code, Action<IDictionaryStream> Handler)
+        public void AddEventHandler(EPacketID PacketID, Action<IDictionaryStream> Handler)
         {
-            EventDic.Add((byte)Code, Handler);
+            EventDic.Add((byte)PacketID, Handler);
         }
 
         /// <summary>
@@ -108,40 +107,39 @@ namespace Game.Network
         /// <summary>
         /// リクエスト送信
         /// </summary>
-        /// <param name="Code">オペレーションコード</param>
         /// <param name="SendPacket">送信パケット</param>
+        /// <param name="ResponsePacketID">レスポンスパケットのＩＤ</param>
         /// <param name="ResponseHandler">リクエストに対応するレスポンスのハンドラ</param>
-        public void SendRequest(EOperationCode Code, IPacket SendPacket, Action<IDictionaryStream> ResponseHandler)
+        public void SendRequest(IPacket SendPacket, EPacketID ResponsePacketID, Action<IDictionaryStream> ResponseHandler)
         {
             if (Peer == null)
             {
                 Debug.LogError("Peer is null.");
                 return;
             }
-            byte ByteCode = (byte)Code;
-            ResponseHandlers.Add(ByteCode, ResponseHandler);
+            byte ByteID = (byte)ResponsePacketID;
+            ResponseHandlers.Add(ByteID, ResponseHandler);
 
             DictionaryStreamWriter Writer = new DictionaryStreamWriter();
             SendPacket.Serialize(Writer);
-            Peer.OpCustom(ByteCode, Writer.Dest, false);
+            Peer.OpCustom((byte)SendPacket.PacketID, Writer.Dest, false);
         }
 
         public void OnOperationResponse(OperationResponse operationResponse)
         {
-            byte Code = operationResponse.OperationCode;
-            if (!ResponseHandlers.ContainsKey(Code)) { throw new Exception(string.Format("{0} に対応するハンドラがない", ((EOperationCode)Code).ToString())); }
+            byte PacketID = operationResponse.OperationCode;
+            if (!ResponseHandlers.ContainsKey(PacketID)) { throw new Exception(string.Format("{0} に対応するハンドラがない", ((EPacketID)PacketID).ToString())); }
 
             DictionaryStreamReader Reader = new DictionaryStreamReader(operationResponse.Parameters);
-            ResponseHandlers[Code]?.Invoke(Reader);
-            ResponseHandlers.Remove(Code);
+            ResponseHandlers[PacketID]?.Invoke(Reader);
+            ResponseHandlers.Remove(PacketID);
         }
 
         /// <summary>
         /// レスポンスの伴わないパケットを送信
         /// </summary>
-        /// <param name="Code">オペレーションコード</param>
-        /// <param name="SendPacket">パラメータ</param>
-        public void SendReport(EOperationCode Code, IPacket SendPacket)
+        /// <param name="SendPacket">パケット</param>
+        public void SendReport(IPacket SendPacket)
         {
             if (Peer == null)
             {
@@ -150,7 +148,7 @@ namespace Game.Network
             }
             DictionaryStreamWriter Writer = new DictionaryStreamWriter();
             SendPacket.Serialize(Writer);
-            Peer.OpCustom((byte)Code, Writer.Dest, false);
+            Peer.OpCustom((byte)SendPacket.PacketID, Writer.Dest, false);
         }
 
         public void OnEvent(EventData eventData)

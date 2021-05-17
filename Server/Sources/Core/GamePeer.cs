@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Photon.SocketServer;
 using PhotonHostRuntimeInterfaces;
 using GameState;
-using Common.Code;
 using Common.Packet;
 using Common.Stream;
 
@@ -23,11 +22,11 @@ public class GamePeer : ClientPeer
     /// </summary>
     /// <param name="Code">イベントコード</param>
     /// <param name="SendPacket">送信パケット</param>
-    public void SendEvent(EEventCode Code, IPacket SendPacket)
+    public void SendEvent(IPacket SendPacket)
     {
         DictionaryStreamWriter Writer = new DictionaryStreamWriter();
         SendPacket.Serialize(Writer);
-        var Data = new EventData((byte)Code, Writer.Dest);
+        var Data = new EventData((byte)SendPacket.PacketID, Writer.Dest);
         SendEvent(Data, new SendParameters());
     }
 
@@ -37,6 +36,6 @@ public class GamePeer : ClientPeer
 
     protected override void OnOperationRequest(OperationRequest operationRequest, SendParameters sendParameters)
     {
-        CurrentState.OnRecvOperation((EOperationCode)operationRequest.OperationCode, operationRequest.Parameters);
+        CurrentState.OnRecvOperation((EPacketID)operationRequest.OperationCode, operationRequest.Parameters);
     }
 }
