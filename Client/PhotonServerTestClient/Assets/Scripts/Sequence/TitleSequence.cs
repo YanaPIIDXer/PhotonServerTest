@@ -7,6 +7,7 @@ using Game.UI;
 using Game.Network;
 using ExitGames.Client.Photon;
 using Common.Packet;
+using UnityEngine.SceneManagement;
 
 namespace Game.Sequence
 {
@@ -33,6 +34,7 @@ namespace Game.Sequence
                         Packet.Serialize(Stream);
                         // 今のところ問答無用でログイン成功
                         Debug.Log("ログイン成功");
+                        SceneManager.LoadScene("Game");
                     });
                 }).AddTo(gameObject);
         }
