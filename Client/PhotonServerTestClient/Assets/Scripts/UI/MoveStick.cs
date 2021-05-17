@@ -34,6 +34,11 @@ namespace Game.UI
 
         void Update()
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+            float X = Input.GetAxis("Horizontal");
+            float Y = Input.GetAxis("Vertical");
+            Stick.ForceMoveHandle(new Vector2(X, Y).normalized);
+#endif
             var InputVec = new Vector2(Stick.Horizontal, Stick.Vertical);
             InputValue.Value = InputVec;
         }
