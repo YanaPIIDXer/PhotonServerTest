@@ -18,6 +18,15 @@ public class GamePeer : ClientPeer
     }
 
     /// <summary>
+    /// 次のステートを設定する
+    /// </summary>
+    /// <param name="NextState">次のステート</param>
+    public void SetNextState(GameState.GameState NextState)
+    {
+        CurrentState = NextState;
+    }
+
+    /// <summary>
     /// イベント送信
     /// </summary>
     /// <param name="Code">イベントコード</param>

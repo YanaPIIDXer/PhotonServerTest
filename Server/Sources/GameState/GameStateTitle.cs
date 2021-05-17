@@ -27,6 +27,9 @@ namespace GameState
         {
             PacketLogInRequest Request = new PacketLogInRequest();
             Request.Serialize(Stream);
+
+            Parent.SetNextState(new GameStatePreActive(Parent));
+
             // 今のところ問答無用
             PacketLogInResult Result = new PacketLogInResult();
             return Result;
