@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game.System;
 using Game.Character.Player.Component;
+using Game.ControlInput;
 
 namespace Game.Character.Player
 {
@@ -31,9 +32,10 @@ namespace Game.Character.Player
         /// <summary>
         /// 操作キャラとしてセットアップ
         /// </summary>
-        public void SetupAsLocalPlayer()
+        /// <param name="MoveInput">移動入力インタフェース</param>
+        public void SetupAsLocalPlayer(IMoveInput MoveInput)
         {
-            var Movement = new LocalPlayerMovement();
+            var Movement = new LocalPlayerMovement(MoveInput);
             AddCharacterComponent(Movement);
         }
     }

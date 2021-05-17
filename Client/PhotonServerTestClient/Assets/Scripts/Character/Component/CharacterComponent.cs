@@ -37,7 +37,6 @@ namespace Game.Character.Component
         /// <typeparam name="T">Componentの型</typeparam>
         /// <returns>Compoennt</returns>
         protected T GetMonoBehaviourComponent<T>()
-            where T : MonoBehaviour
         {
             return Owner.GetComponent<T>();
         }

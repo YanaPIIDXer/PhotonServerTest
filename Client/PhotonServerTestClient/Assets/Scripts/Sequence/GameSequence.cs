@@ -4,6 +4,7 @@ using UnityEngine;
 using Game.Network;
 using Common.Packet;
 using Game.Character.Player;
+using Game.UI;
 
 namespace Game.Sequence
 {
@@ -14,6 +15,7 @@ namespace Game.Sequence
     {
         void Awake()
         {
+            var ControlUIHandler = UIManager.Instance.Show<ControlInputs>("ControlInputs");
             NetworkCore.Instance.SendRequest(new PacketClientReady(), EPacketID.ServerReady, (Stream) =>
             {
                 var Response = new PacketServerReady();
@@ -22,7 +24,7 @@ namespace Game.Sequence
                 // TODO;PlayerManagerクラスを定義してそこに投げる
                 var Pos = Response.Position.ToVector3();
                 var SpawnPlayer = Player.Spawn(Pos);
-                SpawnPlayer.SetupAsLocalPlayer();
+                SpawnPlayer.SetupAsLocalPlayer(ControlUIHandler.Instance.MoveInput);
             });
         }
     }
