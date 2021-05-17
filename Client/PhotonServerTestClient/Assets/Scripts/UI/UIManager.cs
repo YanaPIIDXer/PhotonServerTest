@@ -41,5 +41,21 @@ namespace Game.UI
         /// </summary>
         [SerializeField]
         private Transform CanvasTransform = null;
+
+        /// <summary>
+        /// UI表示
+        /// </summary>
+        /// <param name="PrefabRelativePath">Prefabs/UI/からPrefabまでの相対パス</param>
+        /// <param name="ZOrder">ZOrder</param>
+        /// <typeparam name="T">UIのComponentの型</typeparam>
+        /// <returns>ハンドラ</returns>
+        public UIHandler<T> Show<T>(string PrefabRelativePath, int ZOrder = 0)
+            where T : MonoBehaviour
+        {
+            string Path = UIPrefabPathRoot + PrefabRelativePath;
+            T Inst = PrefabManager.Instance.Load<T>(Path, CanvasTransform);
+            Inst.transform.localPosition += new Vector3(0.0f, 0.0f, ZOrder);
+            return new UIHandler<T>(Inst);
+        }
     }
 }
