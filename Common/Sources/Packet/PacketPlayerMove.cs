@@ -1,30 +1,40 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Common.Stream;
 
 namespace Common.Packet
 {
-    public class $CLASS_NAME$ %BASE_CLASS%
+    public class PacketPlayerMove  : IPacket
 	{
-		$ENUMS$
+		
 
-		$MEMBERS$
+		/// <summary>
+		///  座標
+		/// </summary>
+		public Vec3 Position = new Vec3();
 
-		public $CLASS_NAME$()
+		
+
+		public PacketPlayerMove()
 		{
 		}
 
-		$CONSTRUCTOR$
+		public PacketPlayerMove(Vec3 Position)
+		{
+			this.Position = Position;
+			
+		}
 
 		public bool Serialize(IStream Stream)
 		{
-			$SERIALIZE_MEMBERS$
+			Position.Serialize(Stream);
+			
 			return true;
 		}
 
 		public static byte[] SerializeObject(object customType)
 		{
 			var Stream = new MemoryStreamWriter();
-			var Obj = ($CLASS_NAME$)customType;
+			var Obj = (PacketPlayerMove)customType;
 			Obj.Serialize(Stream);
 			return Stream.Buffer.ToArray();
 		}
@@ -32,7 +42,7 @@ namespace Common.Packet
 		public static object DeserializeObject(byte[] data)
 		{
 			var Stream = new MemoryStreamReader(data);
-			var Obj = new $CLASS_NAME$();
+			var Obj = new PacketPlayerMove();
 			Obj.Serialize(Stream);
 			return Obj;
 		}

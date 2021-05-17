@@ -1,30 +1,40 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Common.Stream;
 
 namespace Common.Packet
 {
-    public class $CLASS_NAME$ %BASE_CLASS%
+    public class PacketPlayerLeave  : IPacket
 	{
-		$ENUMS$
+		
 
-		$MEMBERS$
+		/// <summary>
+		///  ID
+		/// </summary>
+		public int Id = new int();
 
-		public $CLASS_NAME$()
+		
+
+		public PacketPlayerLeave()
 		{
 		}
 
-		$CONSTRUCTOR$
+		public PacketPlayerLeave(int Id)
+		{
+			this.Id = Id;
+			
+		}
 
 		public bool Serialize(IStream Stream)
 		{
-			$SERIALIZE_MEMBERS$
+			Stream.Serialize(ref Id);
+			
 			return true;
 		}
 
 		public static byte[] SerializeObject(object customType)
 		{
 			var Stream = new MemoryStreamWriter();
-			var Obj = ($CLASS_NAME$)customType;
+			var Obj = (PacketPlayerLeave)customType;
 			Obj.Serialize(Stream);
 			return Stream.Buffer.ToArray();
 		}
@@ -32,7 +42,7 @@ namespace Common.Packet
 		public static object DeserializeObject(byte[] data)
 		{
 			var Stream = new MemoryStreamReader(data);
-			var Obj = new $CLASS_NAME$();
+			var Obj = new PacketPlayerLeave();
 			Obj.Serialize(Stream);
 			return Obj;
 		}

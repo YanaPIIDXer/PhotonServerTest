@@ -23,7 +23,7 @@ public class GamePeer : ClientPeer
     /// </summary>
     /// <param name="Code">イベントコード</param>
     /// <param name="SendPacket">送信パケット</param>
-    public void SendEvent(EEventCode Code, Packet SendPacket)
+    public void SendEvent(EEventCode Code, IPacket SendPacket)
     {
         DictionaryStreamWriter Writer = new DictionaryStreamWriter();
         SendPacket.Serialize(Writer);

@@ -5,7 +5,7 @@ namespace Common.Stream
     /// <summary>
     /// Dictionaryからデータを読み込むクラス
     /// </summary>
-    public class DictionaryStreamReader : IDictioanryStream
+    public class DictionaryStreamReader : IDictionaryStream
     {
         /// <summary>
         /// Dictionary

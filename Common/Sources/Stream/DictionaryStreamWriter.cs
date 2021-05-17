@@ -5,7 +5,7 @@ namespace Common.Stream
     /// <summary>
     /// Dictionaryにデータを書き込むクラス
     /// </summary>
-    public class DictionaryStreamWriter : IDictioanryStream
+    public class DictionaryStreamWriter : IDictionaryStream
     {
         /// <summary>
         /// 出力先Dictionary

@@ -61,19 +61,19 @@ namespace Game.Network
         /// <summary>
         /// イベントに対応したActionを保持するDictionary
         /// </summary>
-        private Dictionary<byte, Action<IDictioanryStream>> EventDic = new Dictionary<byte, Action<IDictioanryStream>>();
+        private Dictionary<byte, Action<IDictionaryStream>> EventDic = new Dictionary<byte, Action<IDictionaryStream>>();
 
         /// <summary>
         /// レスポンスのハンドラを保持するDictionary
         /// </summary>
-        private Dictionary<byte, Action<IDictioanryStream>> ResponseHandlers = new Dictionary<byte, Action<IDictioanryStream>>();
+        private Dictionary<byte, Action<IDictionaryStream>> ResponseHandlers = new Dictionary<byte, Action<IDictionaryStream>>();
 
         /// <summary>
         /// イベントのハンドラを追加
         /// </summary>
         /// <param name="Code">イベントコード</param>
         /// <param name="Handler">ハンドラ</param>
-        public void AddEventHandler(EEventCode Code, Action<IDictioanryStream> Handler)
+        public void AddEventHandler(EEventCode Code, Action<IDictionaryStream> Handler)
         {
             EventDic.Add((byte)Code, Handler);
         }
@@ -111,7 +111,7 @@ namespace Game.Network
         /// <param name="Code">オペレーションコード</param>
         /// <param name="SendPacket">送信パケット</param>
         /// <param name="ResponseHandler">リクエストに対応するレスポンスのハンドラ</param>
-        public void SendRequest(EOperationCode Code, Packet SendPacket, Action<IDictioanryStream> ResponseHandler)
+        public void SendRequest(EOperationCode Code, IPacket SendPacket, Action<IDictionaryStream> ResponseHandler)
         {
             if (Peer == null)
             {
@@ -141,7 +141,7 @@ namespace Game.Network
         /// </summary>
         /// <param name="Code">オペレーションコード</param>
         /// <param name="SendPacket">パラメータ</param>
-        public void SendReport(EOperationCode Code, Packet SendPacket)
+        public void SendReport(EOperationCode Code, IPacket SendPacket)
         {
             if (Peer == null)
             {

@@ -85,5 +85,5 @@ namespace Common.Stream
     /// <summary>
     /// Dictionaryストリームインタフェース
     /// </summary>
-    public interface IDictioanryStream : IStream { }
+    public interface IDictionaryStream : IStream { }
 }

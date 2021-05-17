@@ -20,14 +20,14 @@ namespace GameState
         /// <summary>
         /// オペレーションのハンドラDictionary
         /// </summary>
-        private Dictionary<EOperationCode, Func<IDictioanryStream, Packet>> OperationHandlers = new Dictionary<EOperationCode, Func<IDictioanryStream, Packet>>();
+        private Dictionary<EOperationCode, Func<IDictionaryStream, IPacket>> OperationHandlers = new Dictionary<EOperationCode, Func<IDictionaryStream, IPacket>>();
 
         /// <summary>
         /// オペレーションのハンドラ追加
         /// </summary>
         /// <param name="Code">オペレーションコード</param>
         /// <param name="Handler">ハンドラ</param>
-        protected void AddOperationHandler(EOperationCode Code, Func<IDictioanryStream, Packet> Handler)
+        protected void AddOperationHandler(EOperationCode Code, Func<IDictionaryStream, IPacket> Handler)
         {
             OperationHandlers.Add(Code, Handler);
         }

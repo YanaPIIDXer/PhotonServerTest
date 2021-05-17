@@ -46,10 +46,12 @@ namespace NativePacketGenerator
                 Reader.Close();
 
                 string Methods = "";
+                byte Code = 1;
                 foreach (var Class in Classes)
                 {
-                    if (string.IsNullOrEmpty(Class.PacketID)) { continue; }
-                    Methods += "\t\t\tMethod?.Invoke(typeof($CLASS_NAME$), $CLASS_NAME$.PacketID, $CLASS_NAME$.SerializeObject, $CLASS_NAME$.DeserializeObject);\n".Replace("$CLASS_NAME$", Class.ClassName);
+                    if (!string.IsNullOrEmpty(Class.PacketID)) { continue; }
+                    Methods += ("\t\t\tMethod?.Invoke(typeof($CLASS_NAME$), " + Code + ", $CLASS_NAME$.SerializeObject, $CLASS_NAME$.DeserializeObject);\n").Replace("$CLASS_NAME$", Class.ClassName);
+                    Code++;
                 }
                 Template = Template.Replace("$REGISTER$", Methods);
 

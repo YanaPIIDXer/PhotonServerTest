@@ -15,8 +15,8 @@ namespace Common
         /// <summary>
         /// シリアライズ
         /// </summary>
-        /// <param name="Stream">メモリストリーム</param>
+        /// <param name="Stream">ストリーム</param>
         /// <returns>成功したらtrueを返す</returns>
-        bool Serialize(IMemoryStream Stream);
+        bool Serialize(IStream Stream);
     }
 }

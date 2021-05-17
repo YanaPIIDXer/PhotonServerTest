@@ -138,7 +138,11 @@ namespace NativePacketGenerator
             string BaseClass = "";
             if (Class.PacketID != null)
             {
-                BaseClass = " Packet,";
+                BaseClass = " : IPacket";
+            }
+            else
+            {
+                BaseClass = " : ISerializable";
             }
             Template = Template.Replace("%BASE_CLASS%", BaseClass);
 
