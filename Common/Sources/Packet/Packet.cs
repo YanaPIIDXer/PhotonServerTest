@@ -5,5 +5,11 @@ namespace Common.Packet
     /// <summary>
     /// パケットインタフェース
     /// </summary>
-    public interface IPacket : ISerializable { }
+    public interface IPacket : ISerializable
+    {
+        /// <summary>
+        /// パケットＩＤ
+        /// </summary>
+        EPacketID PacketID { get; }
+    }
 }

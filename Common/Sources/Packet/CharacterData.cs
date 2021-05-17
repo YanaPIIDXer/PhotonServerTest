@@ -19,6 +19,8 @@ namespace Common.Packet
 
 		
 
+		
+
 		public CharacterData()
 		{
 		}

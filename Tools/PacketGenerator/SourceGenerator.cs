@@ -148,14 +148,11 @@ namespace NativePacketGenerator
 
             // パケットID
             string PacketId = "";
-            string SendCode = "";
             if (Class.PacketID != null)
             {
-                PacketId = "public static byte PacketID { get { return (byte) EPacketID." + Class.PacketID + "; } }";
-                SendCode = "protected override byte SendCode { get { return PacketID; } }";
+                PacketId = "public EPacketID PacketID { get { return EPacketID." + Class.PacketID + "; } }";
             }
             Template = Template.Replace("$PACKET_ID$", PacketId);
-            Template = Template.Replace("$SEND_CODE$", SendCode);
 
             // enum
             string Enums = "";

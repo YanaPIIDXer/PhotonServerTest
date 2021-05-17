@@ -14,6 +14,8 @@ namespace Common.Packet
 
 		
 
+		public EPacketID PacketID { get { return EPacketID.PlayerMove; } }
+
 		public PacketPlayerMove()
 		{
 		}

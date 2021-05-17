@@ -19,6 +19,8 @@ namespace Common.Packet
 
 		
 
+		public EPacketID PacketID { get { return EPacketID.PlayerEnter; } }
+
 		public PacketPlayerEnter()
 		{
 		}

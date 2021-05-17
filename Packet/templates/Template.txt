@@ -9,6 +9,8 @@ namespace Common.Packet
 
 		$MEMBERS$
 
+		$PACKET_ID$
+
 		public $CLASS_NAME$()
 		{
 		}

@@ -9,6 +9,8 @@ namespace Common.Packet
 
 		
 
+		public EPacketID PacketID { get { return EPacketID.LogInResult; } }
+
 		public PacketLogInResult()
 		{
 		}
