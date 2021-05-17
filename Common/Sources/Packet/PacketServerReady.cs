@@ -12,6 +12,11 @@ namespace Common.Packet
 		/// </summary>
 		public int CharacterId = new int();
 
+		/// <summary>
+		///  座標
+		/// </summary>
+		public Vec3 Position = new Vec3();
+
 		
 
 		public EPacketID PacketID { get { return EPacketID.ServerReady; } }
@@ -20,15 +25,17 @@ namespace Common.Packet
 		{
 		}
 
-		public PacketServerReady(int CharacterId)
+		public PacketServerReady(int CharacterId, Vec3 Position)
 		{
 			this.CharacterId = CharacterId;
+			this.Position = Position;
 			
 		}
 
 		public bool Serialize(IStream Stream)
 		{
 			Stream.Serialize(ref CharacterId);
+			Position.Serialize(Stream);
 			
 			return true;
 		}
