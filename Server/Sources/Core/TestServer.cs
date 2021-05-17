@@ -1,4 +1,5 @@
 using Photon.SocketServer;
+using Common.Packet;
 
 public class TestServer : ApplicationBase
 {
@@ -10,6 +11,7 @@ public class TestServer : ApplicationBase
 
     protected override void Setup()
     {
+        RegisterPacketType.RegisterPackets(Protocol.TryRegisterCustomType);
     }
 
     protected override void TearDown()

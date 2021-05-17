@@ -182,6 +182,10 @@ namespace Game.Network
         void Awake()
         {
             DontDestroyOnLoad(gameObject);
+            RegisterPacketType.RegisterPackets((customType, code, serializeMethod, deserializeMethod) =>
+            {
+                return PhotonPeer.RegisterType(customType, code, (arg) => serializeMethod?.Invoke(arg), (arg) => deserializeMethod?.Invoke(arg));
+            });
         }
 
         void Update()
