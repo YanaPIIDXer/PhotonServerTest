@@ -59,9 +59,9 @@ namespace Game.Network
         public IObservable<StatusCode> OnNetworkStatusChanged { get { return OnNetworkStatusChangedSubject; } }
 
         /// <summary>
-        /// イベントに対応したSubjectを保持するDictionary
+        /// イベントに対応したActionを保持するDictionary
         /// </summary>
-        private Dictionary<byte, Subject<IDictioanryStream>> EventDic = new Dictionary<byte, Subject<IDictioanryStream>>();
+        private Dictionary<byte, Action<IDictioanryStream>> EventDic = new Dictionary<byte, Action<IDictioanryStream>>();
 
         /// <summary>
         /// レスポンスのハンドラを保持するDictionary
@@ -69,18 +69,13 @@ namespace Game.Network
         private Dictionary<byte, Action<IDictioanryStream>> ResponseHandlers = new Dictionary<byte, Action<IDictioanryStream>>();
 
         /// <summary>
-        /// イベントに対応したObservable
+        /// イベントのハンドラを追加
         /// </summary>
         /// <param name="Code">イベントコード</param>
-        /// <returns>Observable</returns>
-        public IObservable<IDictioanryStream> OnEventObservable(EEventCode Code)
+        /// <param name="Handler">ハンドラ</param>
+        public void AddEventHandler(EEventCode Code, Action<IDictioanryStream> Handler)
         {
-            byte ByteCode = (byte)Code;
-            if (!EventDic.ContainsKey(ByteCode))
-            {
-                EventDic[ByteCode] = new Subject<IDictioanryStream>();
-            }
-            return EventDic[ByteCode];
+            EventDic.Add((byte)Code, Handler);
         }
 
         /// <summary>
@@ -164,7 +159,7 @@ namespace Game.Network
             if (!EventDic.ContainsKey(Code)) { return; }        // イベント購読者がいない
 
             DictionaryStreamReader Reader = new DictionaryStreamReader(eventData.Parameters);
-            EventDic[Code].OnNext(Reader);
+            EventDic[Code]?.Invoke(Reader);
         }
 
         public void DebugReturn(DebugLevel level, string message)
