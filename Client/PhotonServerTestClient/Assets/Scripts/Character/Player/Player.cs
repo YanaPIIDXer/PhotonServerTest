@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Game.System;
+using Game.Character.Player.Component;
 
 namespace Game.Character.Player
 {
@@ -25,6 +26,15 @@ namespace Game.Character.Player
             var Player = PrefabManager.Instance.Load<Player>(PrefabPath);
             Player.transform.position = Position;
             return Player;
+        }
+
+        /// <summary>
+        /// 操作キャラとしてセットアップ
+        /// </summary>
+        public void SetupAsLocalPlayer()
+        {
+            var Movement = new LocalPlayerMovement();
+            AddCharacterComponent(Movement);
         }
     }
 }

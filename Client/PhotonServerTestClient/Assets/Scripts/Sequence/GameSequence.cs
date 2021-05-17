@@ -21,7 +21,8 @@ namespace Game.Sequence
                 //var Id = Response.CharacterId;
                 // TODO;PlayerManagerクラスを定義してそこに投げる
                 var Pos = Response.Position.ToVector3();
-                Player.Spawn(Pos);
+                var SpawnPlayer = Player.Spawn(Pos);
+                SpawnPlayer.SetupAsLocalPlayer();
             });
         }
     }
