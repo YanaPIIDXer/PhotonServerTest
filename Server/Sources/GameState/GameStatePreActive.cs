@@ -31,7 +31,7 @@ namespace GameState
 
             // とりあえずダミーデータでも投げる
             var Id = Parent.ConnectionId;
-            var Pos = new Vec3();
+            var Pos = new Vec3(1.0f, 0.0f, -3.0f);
             var Response = new PacketServerReady(Id, Pos);
             return Response;
         }
