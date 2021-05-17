@@ -12,6 +12,6 @@ namespace Game.UI
         /// <summary>
         /// ZOrder
         /// </summary>
-        public abstract int ZOrder { get; }
+        public abstract EZOrder ZOrder { get; }
     }
 }

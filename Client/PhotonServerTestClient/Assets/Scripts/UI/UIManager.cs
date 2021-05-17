@@ -53,7 +53,7 @@ namespace Game.UI
         {
             string Path = UIPrefabPathRoot + PrefabRelativePath;
             T Inst = PrefabManager.Instance.Load<T>(Path, CanvasTransform);
-            Inst.transform.localPosition += new Vector3(0.0f, 0.0f, Inst.ZOrder);
+            Inst.transform.localPosition += new Vector3(0.0f, 0.0f, (float)Inst.ZOrder);
             return new UIHandler<T>(Inst);
         }
     }
