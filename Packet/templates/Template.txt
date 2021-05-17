@@ -1,0 +1,43 @@
+using Common.Stream;
+
+namespace Common.Packet
+{
+    public class $CLASS_NAME$ :%BASE_CLASS% ISerializable
+	{
+		$PACKET_ID$
+
+		$ENUMS$
+
+		$MEMBERS$
+
+		$SEND_CODE$
+
+		public $CLASS_NAME$()
+		{
+		}
+
+		$CONSTRUCTOR$
+
+		public bool Serialize(IMemoryStream Stream)
+		{
+			$SERIALIZE_MEMBERS$
+			return true;
+		}
+
+		public static byte[] SerializeObject(object customType)
+		{
+			var Stream = new MemoryStreamWriter();
+			var Obj = ($CLASS_NAME$)customType;
+			Obj.Serialize(Stream);
+			return Stream.Buffer.ToArray();
+		}
+
+		public static object DeserializeObject(byte[] data)
+		{
+			var Stream = new MemoryStreamReader(data);
+			var Obj = new $CLASS_NAME$();
+			Obj.Serialize(Stream);
+			return Obj;
+		}
+	}
+}
