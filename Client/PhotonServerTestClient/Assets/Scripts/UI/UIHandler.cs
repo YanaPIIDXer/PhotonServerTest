@@ -7,9 +7,9 @@ namespace Game.UI
     /// <summary>
     /// UIハンドラ
     /// </summary>
-    /// <typeparam name="T">UIComponentの型</typeparam>
+    /// <typeparam name="T">Componentの型</typeparam>
     public class UIHandler<T>
-        where T : MonoBehaviour
+        where T : UIComponent
     {
         /// <summary>
         /// UIインスタンス
