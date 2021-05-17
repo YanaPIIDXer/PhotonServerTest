@@ -23,6 +23,11 @@ namespace Game.Character.Player.Component
         private Rigidbody Body = null;
 
         /// <summary>
+        /// Transform
+        /// </summary>
+        private Transform Trans = null;
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         /// <param name="MoveInput">移動入力インタフェース</param>
@@ -38,6 +43,7 @@ namespace Game.Character.Player.Component
         protected override void OnIntiialize()
         {
             Body = GetMonoBehaviourComponent<Rigidbody>();
+            Trans = GetMonoBehaviourComponent<Transform>();
         }
 
         /// <summary>
@@ -45,7 +51,9 @@ namespace Game.Character.Player.Component
         /// </summary>
         public override void OnFixedUpdate()
         {
-            Body.velocity = new Vector3(CurrentInput.x, 0.0f, CurrentInput.y);
+            var MoveVec = new Vector3(CurrentInput.x, 0.0f, CurrentInput.y);
+            Body.velocity = MoveVec;
+            Trans.LookAt(Trans.position + MoveVec);
         }
     }
 }
