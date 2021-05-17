@@ -22,9 +22,9 @@ namespace Common.Packet
         /// </summary>
         /// <param name="Self">Vec3</param>
         /// <returns>Vector3</returns>
-        public static Vec3 ToVector3(this Vec3 Self)
+        public static Vector3 ToVector3(this Vec3 Self)
         {
-            return new Vec3(Self.X, Self.Y, Self.Z);
+            return new Vector3(Self.X, Self.Y, Self.Z);
         }
     }
 }
