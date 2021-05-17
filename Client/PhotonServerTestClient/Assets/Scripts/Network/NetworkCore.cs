@@ -84,7 +84,7 @@ namespace Game.Network
             }
 
             Peer = new PhotonPeer(this, ConnectionProtocol.Tcp);
-            return Peer.Connect("127.0.0.1:4580", "TestServer");
+            return Peer.Connect("127.0.0.1:4530", "TestServer");
         }
 
         /// <summary>
