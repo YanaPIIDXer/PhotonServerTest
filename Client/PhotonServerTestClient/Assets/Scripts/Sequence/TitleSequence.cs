@@ -21,8 +21,7 @@ namespace Game.Sequence
                 .Subscribe(_ =>
                 {
                     NetworkCore.Instance.Connect();
-                });
-
+                }).AddTo(gameObject);
 
             NetworkCore.Instance.OnNetworkStatusChanged
                 .Where((Code) => Code == StatusCode.Connect)
@@ -35,7 +34,7 @@ namespace Game.Sequence
                         // 今のところ問答無用でログイン成功
                         Debug.Log("ログイン成功");
                     });
-                });
+                }).AddTo(gameObject);
         }
     }
 }
