@@ -6,6 +6,7 @@ using UniRx;
 using System;
 using Common.Packet;
 using Common.Stream;
+using Game.System;
 
 namespace Game.Network
 {
@@ -28,13 +29,7 @@ namespace Game.Network
             {
                 if (_Instance == null)
                 {
-                    var Prefab = Resources.Load<GameObject>(PrefabPath);
-                    Debug.Assert(Prefab != null, "NetworkCore Prefab Load Failed.");
-
-                    var Obj = Instantiate<GameObject>(Prefab);
-                    Debug.Assert(Obj != null, "NetworkCore Instantiate Failed.");
-
-                    _Instance = Obj.GetComponent<NetworkCore>();
+                    _Instance = PrefabManager.Instance.Load<NetworkCore>(PrefabPath);
                 }
                 return _Instance;
             }
