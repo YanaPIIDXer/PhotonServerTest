@@ -37,6 +37,7 @@ namespace Game.Character.Player
         {
             var Movement = new LocalPlayerMovement(MoveInput);
             AddCharacterComponent(Movement);
+            AddCharacterComponent(new MoveReportSender());
         }
     }
 }
