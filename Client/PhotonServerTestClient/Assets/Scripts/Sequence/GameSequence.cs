@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Game.Network;
+using Common.Packet;
 
 namespace Game.Sequence
 {
@@ -11,6 +13,14 @@ namespace Game.Sequence
     {
         void Awake()
         {
+            NetworkCore.Instance.SendRequest(new PacketClientReady(), EPacketID.ServerReady, (Stream) =>
+            {
+                var Response = new PacketServerReady();
+                Response.Serialize(Stream);
+                var Id = Response.CharacterId;
+                var Pos = Response.Position.ToVector3();
+                Debug.Log("Id:" + Id + " Position:" + Pos.ToString());
+            });
         }
     }
 }
