@@ -19,8 +19,38 @@ namespace Game.System
         /// </summary>
         /// <param name="Path">Prefabのパス</param>
         /// <typeparam name="T">Componentの型</typeparam>
-        /// <returns></returns>
+        /// <returns>Component</returns>
         public T Load<T>(string Path)
+        {
+            var Prefab = FindOrLoadPrefab(Path);
+            var Obj = GameObject.Instantiate(Prefab);
+            Debug.Assert(Obj != null, "Prefab Instantiate Failed. Path:" + Path);
+
+            return Obj.GetComponent<T>();
+        }
+
+        /// <summary>
+        /// 読み込み
+        /// </summary>
+        /// <param name="Path">Prefabのパス</param>
+        /// <param name="ParentTransform">親Transform</param>
+        /// <typeparam name="T">Componentの型</typeparam>
+        /// <returns>Component</returns>
+        public T Load<T>(string Path, Transform ParentTransform)
+        {
+            var Prefab = FindOrLoadPrefab(Path);
+            var Obj = GameObject.Instantiate(Prefab, ParentTransform);
+            Debug.Assert(Obj != null, "Prefab Instantiate Failed. Path:" + Path);
+
+            return Obj.GetComponent<T>();
+        }
+
+        /// <summary>
+        /// Prefabを読み込むか保持してあるものを返す
+        /// </summary>
+        /// <param name="Path">パス</param>
+        /// <returns>Prefab</returns>
+        private GameObject FindOrLoadPrefab(string Path)
         {
             if (!PrefabDic.ContainsKey(Path))
             {
@@ -28,11 +58,7 @@ namespace Game.System
                 Debug.Assert(Prefab != null, "Prefab Load Failed. Path:" + Path);
                 PrefabDic.Add(Path, Prefab);
             }
-
-            var Obj = GameObject.Instantiate(PrefabDic[Path]);
-            Debug.Assert(Obj != null, "Prefab Instantiate Failed. Path:" + Path);
-
-            return Obj.GetComponent<T>();
+            return PrefabDic[Path];
         }
 
         #region Singleton
