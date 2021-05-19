@@ -2,7 +2,7 @@
 
 ハマった箇所のまとめ
 
-## SDKダウンロードでログインできない
+## SDKダウンロード時にログインできない
 EC2のWindowsServerだとIEを使わざるを得ない。  
 
 1. http://*.photonengine.com/ をホワイトリストに突っ込む
