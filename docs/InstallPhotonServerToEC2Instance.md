@@ -12,3 +12,9 @@ IEのインターネット設定→セキュリティタブより下記の設定
 
 - Photonのサイトをホワイトリストに突っ込むのは、ログイン時に「Invalid Parameter」と怒られるのを防ぐため
 - グローバル設定のスクリプト実行関係を全部Enabledにするのは、Captchaを表示させるため
+
+## セキュリティグループでポート開けてるのに繋がらない
+
+セキュリティグループでポートを開けるだけでは駄目。  
+WindowsServer内のファイアウォールでもポートに風穴を開ける必要がある。  
+詳しくは[ここ](https://rainbow-engine.com/winserver-firewall-port-allow/)を参照。  
